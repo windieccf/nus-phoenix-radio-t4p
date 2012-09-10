@@ -26,16 +26,15 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 
 	@Override
 	public User getByUsername(String username) {
-		Connection con = null;
-		ResultSet rs = null;
 		
-		try{
+		try( Connection con = super.getConnection() ){
 			StringBuffer mySql = new StringBuffer("SELECT * FROM ")
 								.append( super.getTableName(User.class.getName()) + " WHERE UPPER(USERNAME) = ? ");
-			con = super.getConnection();
+
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			stmt.setString(1, username.toUpperCase());
-			rs = stmt.executeQuery();
+
+			ResultSet rs = stmt.executeQuery();
 			if(rs.next()){
 				User user = super.createValueObject();
 				super.assignValue(user, user.getColumnField(), rs);
@@ -43,20 +42,6 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			if(rs!=null){
-				try {
-					rs.close();
-				} catch (SQLException e) {/*IGNORED*/}
-				rs = null;
-			}
-			
-			if(con!=null){
-				try {
-					con.close();
-				} catch (SQLException e) {/*IGNORED*/}
-				con = null;
-			}
 		}
 		
 		return null;
