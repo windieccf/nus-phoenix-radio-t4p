@@ -9,6 +9,9 @@ import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column.TYPE;
+import sg.edu.nus.iss.t4p.phoenix.core.annotation.PrePersist;
+import sg.edu.nus.iss.t4p.phoenix.core.annotation.PreUpdate;
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 
 @SuppressWarnings("serial")
 public abstract class BaseEntity implements Cloneable, Serializable{
@@ -17,6 +20,7 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 		List<Field> fields = this.getFieldsByType(Column.TYPE.PRIMARY);
 		for(Field field : fields){
 			try {
+				field.setAccessible(true);
 				Object val = field.get(this);
 				if(val == null)
 					return false;
@@ -66,6 +70,22 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 		
 		
 		return fields;
+	}
+	
+	
+	/*************************************** CALL BACK METHOD UPON PERSIST *********************************************************************/
+	
+	@PrePersist
+	public void prePersist(){
+		if(!this.isPkSet()){
+			this.setStatus(ConstantStatus.ACTIVE);
+			this.setCreatedDateTime(new Date());
+		}
+	}
+	
+	@PreUpdate
+	public void preUpdate(){
+		this.setModifiedDateTime(new Date());
 	}
 	
 	

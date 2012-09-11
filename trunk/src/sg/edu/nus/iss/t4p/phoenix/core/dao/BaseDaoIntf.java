@@ -74,7 +74,7 @@ public interface BaseDaoIntf <T extends BaseEntity> {
 	 *            automatic surrogate-keys are not used the Primary-key field
 	 *            must be set for this to work properly.
 	 */
-	public abstract void persist(T valueObject)throws SQLException;
+	public abstract void persist(T valueObject)throws NotFoundException, SQLException;
 	
 	
 	/**

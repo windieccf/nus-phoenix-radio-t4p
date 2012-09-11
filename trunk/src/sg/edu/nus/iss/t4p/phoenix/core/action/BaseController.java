@@ -57,7 +57,6 @@ public abstract class BaseController extends HttpServlet {
 			 e.printStackTrace();
 			 throw new ServletException(e.getMessage());
 		 }
-		 
 	 }
 	 
 	 protected void doRedirect(HttpServletRequest request,	HttpServletResponse response, String path) throws IOException{
