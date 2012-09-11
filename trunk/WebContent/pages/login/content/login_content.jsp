@@ -1,4 +1,6 @@
 <%@ include file="/pages/include/tag_include.jsp" %>
+
+
 <script>
 	jQuery(document).ready(function($){
 		
@@ -18,15 +20,7 @@
 		<fieldset>
 			<legend>Login</legend>
 		</fieldset>
-		
-		<c:if test="${not empty requestScope.ERR}">
-			<div class="alert alert-block alert-error fade in">
-				 <button type="button" class="close" data-dismiss="alert">×</button>
-				${requestScope.ERR}
-			</div>
-		</c:if>
-		
-		
+		<jsp:include page="/pages/include/messages.jsp" />
 		
 		<div class="control-group">
                 <label class="control-label required-field"><fmt:message key="fieldLabel.username"/></label> 

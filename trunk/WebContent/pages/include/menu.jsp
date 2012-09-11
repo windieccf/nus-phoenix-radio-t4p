@@ -9,7 +9,7 @@
       		<c:otherwise>
 		      	<li><a href="#"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.user"/></a></li>
 				<li><a href="#"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.profile"/></a></li>
-				<li><a href="#"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.schedule"/></a></li>
+				<li><a href="<c:url value='/controller/listSchedule.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.schedule"/></a></li>
 				<li><a href="<c:url value='/controller/logout.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.logout"/></a></li>
 			</c:otherwise>
 		</c:choose>
