@@ -90,8 +90,8 @@ html,body {
 
 .strong-line{
 	color: #000000;
-background-color: #000000;
-height: 1px;
+	background-color: #000000;
+	height: 1px;
 }
 
 
@@ -100,3 +100,13 @@ height: 1px;
     content: '*';
     display:inline;
 }
+
+
+.nav-title{
+	  display: block;
+	  padding: 8px 20px 12px;
+	  margin-left: -20px;
+	  line-height: 1;
+	  color: #FFFFFF;
+}
+

@@ -3,6 +3,9 @@ package sg.edu.nus.iss.t4p.phoenix.core.enumeration;
 public enum UrlPathEnum {
 	ACTION_LOGIN("/authenticate.do", "/controller/authenticate.do" ,"/authenticateController/login.do"),
 	ACTION_LOGOUT("/logout.do", "/controller/logout.do" ,"/authenticateController/logout.do"),
+	ACTION_LIST_SCHEDULE("/listSchedule.do", "/controller/listSchedule.do" ,"/scheduleController/list.do"),
+	
+	
 	PAGE_HOME("/", "/" ,"/");
 	
 	private String controlPath;
