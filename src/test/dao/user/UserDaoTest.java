@@ -1,6 +1,7 @@
 package test.dao.user;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import junit.framework.Assert;
 
@@ -13,7 +14,7 @@ import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 
 public class UserDaoTest {
 	
-	@Test
+//	@Test
 	public void retrieveUserById(){
 		Long userId = 1L;
 		User user = null;
@@ -29,7 +30,7 @@ public class UserDaoTest {
 		Assert.assertTrue(user.getId() != null);
 	}
 	
-	@Test
+//	@Test
 	public void retrieveUserByObject(){
 		Long userId = 1L;
 		User user = null;
@@ -48,12 +49,44 @@ public class UserDaoTest {
 	}
 	
 	
-
-	@Test
+//	@Test
 	public void retrieveCorrectUser(){
 		String username = "robin";
 		User user = DaoFactory.getInstance().getUserDao().getByUsername(username);
 		Assert.assertTrue(username.equals(user.getUsername()));
 	}
+	
+	
+	@Test
+	public void insertUser(){
+		User user = new User();
+		try {
+			user.setUsername("robin");
+			user.setPassword("password");
+			user.setContactHome("93805110");
+			user.setContactMobile("91157054");
+			user.setAddress("singapore");
+			user.setEmail("WWW@www.com");
+			user.setLastName("foe");
+			user.setFirstName("Robin");
+			user.setDateOfBirth(new Date());
+			try {
+				DaoFactory.getInstance().getUserDao().persist(user);
+			} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.err.println(user.getId());
+			
+			//user = DaoFactory.getInstance().getUserDao().getObject(String.valueOf(userId));
+//			System.err.println(user.getUsername());
+//			Assert.assertTrue(user.getId() != null);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+//		Assert.assertTrue(user.getId() != null);
+	}
+	
+	
 	
 }

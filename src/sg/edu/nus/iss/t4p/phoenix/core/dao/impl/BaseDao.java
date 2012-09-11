@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,11 @@ import java.util.Map;
 
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Table;
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 import sg.edu.nus.iss.t4p.phoenix.core.dao.DBConstants;
 import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
+import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 public abstract class BaseDao<T extends BaseEntity> {
 
@@ -43,7 +46,7 @@ public abstract class BaseDao<T extends BaseEntity> {
 			if( tableName == null || "".equals( tableName.trim() ))
 				throw new IllegalArgumentException("The @Table annotation must contain Name");
 			
-			tableName = (tableName == null || "".equals( tableName.trim())) ? tableName : schema + "." + tableName;
+			tableName = (schema == null || "".equals( schema.trim() )) ? tableName : schema + "." + tableName;
 			TABLE_NAME.put(klass.getName(), tableName);
 		}
 	}
@@ -51,57 +54,51 @@ public abstract class BaseDao<T extends BaseEntity> {
 	public T createValueObject(){
 		try {
 			return klass.newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
-	
 	
 	public T getObject(String id) throws NotFoundException, SQLException{
 		T valueObj = this.createValueObject();
 		List<Field> fields = valueObj.getFieldsByType(Column.TYPE.PRIMARY);
 		
 		StringBuffer mySql = new StringBuffer("SELECT * FROM ")
-									.append( TABLE_NAME.get(this.klass.getName()) + " WHERE 1=1 ");
+											.append( TABLE_NAME.get(this.klass.getName()) )
+											.append(" WHERE 1=1 ");
 		
 		for(Field field : fields){
 			String columnName = field.getAnnotation(Column.class).name();
 			mySql.append(" AND "+columnName+" = ? ");
 		}
 		
-		Connection con = null;
-		PreparedStatement stmt = null;
-		try{
-//			TODO 
-			con = this.getConnection();
-			//PreparedStatement stmt = con.prepareStatement(mySql.toString());
+		try(Connection con = this.getConnection();) {
+			
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			stmt.setLong(1,Long.parseLong(id));
 			ResultSet rs = stmt.executeQuery();
+			fields = valueObj.getColumnField();
+			
 			if(rs.next())
 				this.assignValue(valueObj, fields, rs);
 			
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			
 		}
-		
-		
 		
 		return valueObj;
 	}
 	
 	public void load(T valueObject)	throws NotFoundException, SQLException{
 		List<Field> fields = valueObject.getFieldsByType(Column.TYPE.PRIMARY);
-		try {
+		try (Connection con = this.getConnection(); ) {
 			StringBuffer mySql = new StringBuffer("SELECT * FROM ")
-									.append( TABLE_NAME.get(this.klass.getSimpleName()) + " WHERE 1=1 ");
+												.append( TABLE_NAME.get(this.klass.getSimpleName()) )
+												.append(" WHERE 1=1 ");
 			
 			Long pk = null;
-			
 			for(Field field : fields){
 				String columnName = field.getAnnotation(Column.class).name();
 				mySql.append(" AND "+columnName+" = ? ");
@@ -112,35 +109,149 @@ public abstract class BaseDao<T extends BaseEntity> {
 				pk = field.getLong(valueObject);
 			}
 			
-			Connection con = this.getConnection();
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			stmt.setLong(1,pk);
+			ResultSet rs = stmt.executeQuery();
+			fields = valueObject.getColumnField();
+			if(rs.next())
+				this.assignValue(valueObject, fields, rs);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		
 	}
-	
 	
 	public List<T> loadAll() throws SQLException{
-		return null;
-	}
-	
-	
-	public void persist(T valueObject)throws SQLException{
+		List<T> list = new ArrayList<T>();
+		StringBuffer mySql = new StringBuffer("SELECT * FROM ")
+							.append( TABLE_NAME.get(this.klass.getSimpleName()) );
 		
+		try (Connection con = this.getConnection(); ) {
+			ResultSet rs = con.createStatement().executeQuery(mySql.toString());
+			T valueObject = this.createValueObject();
+			List<Field> fields= valueObject.getColumnField();
+			
+			while(rs.next()){
+				valueObject = this.createValueObject();
+				this.assignValue(valueObject, fields, rs);
+				list.add(valueObject);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 	
+	public void persist(T valueObject)throws NotFoundException, SQLException{
+		if(valueObject.isPkSet())
+			this.merge(valueObject);
+		else{
+			StringBuffer mySql = new StringBuffer(" INSERT INTO " + this.getTableName(klass.getName()) );
+
+			List<Field> fields = valueObject.getColumnField();
+			
+			List<String> columns = new ArrayList<String>();
+			List<Object> params = new ArrayList<Object>();
+			
+			for(Field field : fields){
+				Column col = field.getAnnotation(Column.class);
+				String columnName = col.name();
+				Object val = null;
+				try {
+					field.setAccessible(true);
+					val = field.get(valueObject);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				
+				// upon insert, we will neglect the PK
+				if(col.columnType().compareTo(Column.TYPE.PRIMARY) == 0 || val == null)
+					continue;
+				
+				columns.add(columnName);
+				params.add(val);
+			}
+			mySql.append(" (  "+ T4StringUtil.join(columns, " , ") +" ) VALUES ( " +this.constructParameter(columns.size())+" ) " ) ;
+			System.err.println(mySql.toString());
+			
+			try(Connection con = this.getConnection()){
+				PreparedStatement stmt = con.prepareStatement(mySql.toString());
+				for(int i = 1; i <= params.size(); i++){
+					stmt.setObject(i, params.get(i-1));
+				}
+				stmt.executeUpdate();
+			}catch(SQLException e){
+				throw e;
+			}
+			
+			
+		}
+	}
 	
 	public void merge(T valueObject)throws NotFoundException, SQLException{
 		
+		StringBuffer mySql = new StringBuffer(" UPDATE" + this.getTableName(klass.getName()) + " SET ");
+
+		List<Field> fields = valueObject.getColumnField();
+		List<String> columnSet = new ArrayList<String>();
+		List<Object> params = new ArrayList<Object>();
+		Object pk = null;
+		for(Field field : fields){
+			Column col = field.getAnnotation(Column.class);
+			String columnName = col.name();
+			Object val = null;
+			try {
+				field.setAccessible(true);
+				val = field.get(valueObject);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			if(col.columnType().compareTo(Column.TYPE.PRIMARY) == 0)
+				pk = val;
+			
+			// upon update, we will neglect the PK
+			if(col.columnType().compareTo(Column.TYPE.PRIMARY) == 0 || val == null)
+				continue;
+			
+			columnSet.add(columnName + " = ? ");
+			params.add(val);
+		}
+		mySql.append( T4StringUtil.join(columnSet, " , "))
+			.append(" WHERE ID = ? ");
+		
+		params.add(pk);
+		
+		try(Connection con = this.getConnection()){
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
+			for(int i = 1; i <= params.size(); i++){
+				stmt.setObject(i, params.get(i-1));
+			}
+			stmt.executeUpdate();
+		}catch(SQLException e){
+			throw e;
+		}
 	}
 	
-	public void remove(T valueObject)throws NotFoundException, SQLException{}
+	public void remove(T valueObject)throws NotFoundException, SQLException{
+		valueObject.setStatus(ConstantStatus.DELETE);
+		this.merge(valueObject);
+	}
 	
-	public void removeAll() throws SQLException{}
+	public void removeAll() throws SQLException{
+		StringBuffer mySql = new StringBuffer(" UPDATE" + this.getTableName(klass.getName()) + " SET STATUS = '"+ConstantStatus.DELETE+"' ");
+		
+		try(Connection con = this.getConnection()){
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
+			stmt.executeUpdate();
+		}catch(SQLException e){
+			throw e;
+		}
+		
+	}
 	
 	public int countAll() throws SQLException{
 		return 0;
@@ -149,7 +260,6 @@ public abstract class BaseDao<T extends BaseEntity> {
 	public List<T> searchMatching(T valueObject)throws SQLException{
 		return null;
 	}
-	
 	
 	protected Connection getConnection() {
 		Connection conn = null;
@@ -190,9 +300,11 @@ public abstract class BaseDao<T extends BaseEntity> {
 					 field.set(valueObj, rs.getBigDecimal(columnName));
 				 else if (dataType.equals(Date.class))
 					 field.set(valueObj, new Date(rs.getTimestamp(columnName).getTime() ));
-				 else
+				 else if (dataType.equals(String.class))
 					 field.set(valueObj, rs.getString(columnName));
-				
+				 else{
+					 /*IGNORED*/
+				 }
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -201,6 +313,17 @@ public abstract class BaseDao<T extends BaseEntity> {
 	
 	protected String getTableName(String klassName){
 		return TABLE_NAME.get(klassName);
+	}
+
+	private String constructParameter(int columnCount){
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < columnCount; i++){
+			sb.append("?");
+			if(i != columnCount -1 )
+    			sb.append(",");
+			
+		}
+		return sb.toString();
 	}
 	
 }

@@ -23,12 +23,13 @@ public class AuthenticateController extends BaseController {
 			if(T4StringUtil.isEmpty(user.getUsername()) || T4StringUtil.isEmpty(user.getPassword()))
 				throw new BusinessLogicException("Please fill in Username and Password");
 			
-			user = (new AuthenticateDelegate()).authenticateUser(user.getUsername(), user.getPassword());
+			user = (new AuthenticateDelegate()).authenticateUser(user);
 			if(user!= null)
 				request.getSession().setAttribute("user", user);
 		
 			super.doRedirect(request, response, "/");
 		}catch(Exception e){
+			
 			request.setAttribute("ERR", e.getMessage());
 			request.getRequestDispatcher("/pages/login/login.jsp").forward(request, response);
 		}

@@ -1,5 +1,7 @@
 package sg.edu.nus.iss.t4p.phoenix.utility;
 
+import java.util.List;
+
 public class T4StringUtil {
 	
 	private T4StringUtil(){/*ENSURE NO CREATIONAL OF THE CLASS*/}
@@ -32,5 +34,20 @@ public class T4StringUtil {
 	public static boolean isEmpty(String text){
 		return (text == null || "".equals(text.trim())) ;
 	}
+	
+	
+	public static String join(List<String> texts, String regex){
+    	StringBuffer sb = new StringBuffer();
+    	if(texts == null || texts.isEmpty()) 
+			return "";
+    	
+    	for(int i = 0 ; i < texts.size(); i++){
+    		sb.append(texts.get(i));
+    		if(!T4StringUtil.isEmpty(regex)  && i != texts.size() -1 )
+    			sb.append(regex);
+    	}
+    	return sb.toString();
+    }
+	
 
 }

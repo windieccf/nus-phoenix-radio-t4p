@@ -6,8 +6,8 @@ import sg.edu.nus.iss.t4p.phoenix.service.security.AuthenticateService;
 
 public class AuthenticateDelegate {
 	
-	public User authenticateUser(String username, String password) throws BusinessLogicException{
-		return (new AuthenticateService()).authenticateUser(username, password);
+	public User authenticateUser(User user) throws BusinessLogicException{
+		return (new AuthenticateService()).authenticateUser(user);
 	}
 
 }
