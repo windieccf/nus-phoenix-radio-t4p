@@ -1,10 +1,13 @@
 package sg.edu.nus.iss.t4p.phoenix.utility;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class T4StringUtil {
 	
 	private T4StringUtil(){/*ENSURE NO CREATIONAL OF THE CLASS*/}
+	public static final DecimalFormat FORMAT_01 = new DecimalFormat("00");
+	
 	
 	public static String translateUrlToMethod(String pathInfo){
 		int pos = pathInfo.indexOf(".");
