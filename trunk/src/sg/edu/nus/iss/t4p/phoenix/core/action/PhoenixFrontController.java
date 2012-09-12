@@ -20,6 +20,5 @@ public class PhoenixFrontController extends BaseController {
 		request.setAttribute("comingFrom", "PhoenixFrontController");
 		request.getRequestDispatcher(  UrlPathEnum.getByControlPath(pathInfo).getDestinationPath()  ).forward(request, response);
 	}
-	
 
 }
