@@ -110,3 +110,63 @@ html,body {
 	  color: #FFFFFF;
 }
 
+.year{
+	font-size:80px;
+	margin-top:10px;
+}
+
+.month{
+	font-size:32px;
+	color:red;
+}
+
+.time{
+	float:right;
+	font-size:36px;
+	text-align:right;
+}
+
+
+
+.calendar{
+	width:100%;
+}
+
+.calendar TH{
+	font-size:14px;
+	font-weight:bold;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #ccc;
+	padding: 10px 0 10px 0px ;
+	width:14%;
+	text-align: left;;
+}
+
+.calendar TD{
+	height:70px;
+	font-size:24px;
+	color:#999;
+	width:14%;
+	border-top:1px solid #ccc;
+	padding-top: 10px;
+}
+.calendar-entry{
+	padding-top: 10px;
+	font-size:12px !important;
+}
+
+.calendar TD.weekend{
+	color:#CDCDCD;
+}
+
+.calendar TD.today{
+	background-color:#EFEFEF;
+	color:#666666;
+}
+
+.calendar TD.holiday{
+	color:red;
+}
+
+
+
