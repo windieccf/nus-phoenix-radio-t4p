@@ -15,6 +15,8 @@ public class ScheduleController extends BaseController {
 
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		// TODO :: listing by either week or month
+		
+		request.getRequestDispatcher("/pages/scheduler/scheduler.jsp").forward(request, response);
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
