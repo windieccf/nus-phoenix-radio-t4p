@@ -4,7 +4,8 @@ public enum UrlPathEnum {
 	ACTION_LOGIN("/authenticate.do", "/controller/authenticate.do" ,"/authenticateController/login.do"),
 	ACTION_LOGOUT("/logout.do", "/controller/logout.do" ,"/authenticateController/logout.do"),
 	ACTION_LIST_SCHEDULE("/listSchedule.do", "/controller/listSchedule.do" ,"/scheduleController/list.do"),
-	
+	ACTION_LIST_USER("/listUser.do", "/controller/listUser.do" ,"/userController/list.do"),
+	ACTION_DISPLAY_USER("/displayUser.do", "/controller/displayUser.do" ,"/userController/display.do"),
 	
 	PAGE_HOME("/", "/" ,"/");
 	

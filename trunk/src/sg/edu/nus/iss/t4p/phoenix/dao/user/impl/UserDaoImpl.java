@@ -3,6 +3,7 @@ package sg.edu.nus.iss.t4p.phoenix.dao.user.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.UserDao;
@@ -39,6 +40,30 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 				super.assignValue(user, user.getColumnField(), rs);
 				return user;
 			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public ArrayList<User> retrieveUserList() {
+		ArrayList<User> users = new ArrayList<>();
+		try( Connection con = super.getConnection() ){
+			StringBuffer mySql = new StringBuffer("SELECT * FROM ")
+								.append( super.getTableName(User.class.getName()));
+
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
+	
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()){
+				User user = super.createValueObject();
+				super.assignValue(user, user.getColumnField(), rs);
+				users.add(user);
+			}
+			return users;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
