@@ -155,9 +155,11 @@ html,body {
 	font-size:12px !important;
 }
 
+/*
 .calendar TD.weekend{
 	color:#CDCDCD;
 }
+*/
 
 .calendar TD.today{
 	background-color:#EFEFEF;
@@ -166,6 +168,14 @@ html,body {
 
 .calendar TD.holiday{
 	color:red;
+}
+
+.calendar TD.not-in-month{
+	color:#CDCDCD !important;
+}
+
+.margin-bottom-10px{
+	margin-bottom: 10px;
 }
 
 
