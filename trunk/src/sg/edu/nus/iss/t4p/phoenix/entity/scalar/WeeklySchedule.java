@@ -29,19 +29,33 @@ public class WeeklySchedule {
 	public Date getStartDate() {return startDate;}
 	public void setStartDate(Date startDate) {this.startDate = startDate;}
 	
-	private int programCount;
-	public int getProgramCount() {return programCount;}
-	public void setProgramCount(int programCount) {this.programCount = programCount;}
+	private int[] programCount;
+	public int[] getProgramCount() {return programCount;}
+	public void setProgramCount(int[] programCount) {this.programCount = programCount;}
 	
 	private List<ProgramSlot>[] weekSlot;
 	public List<ProgramSlot>[] getWeekSlot() {return weekSlot;}
 	public void setWeekSlot(List<ProgramSlot>[] weekSlot) {this.weekSlot = weekSlot;}
 	
+	
+	/** Cosmetic related function. Not in USE CASE DIAGRAM **********************************************/
 	public String getDateDisplay(int ctr){
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(startDate);
 		cal.add(Calendar.DATE, ctr);
 		return T4StringUtil.FORMAT_01.format(cal.get(Calendar.DATE));
+	}
+	
+	public boolean isSameMonth(int ctr, int currMonth){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(startDate);
+		cal.add(Calendar.DATE, ctr);
+		return (cal.get(Calendar.MONTH) == currMonth);
+	}
+	
+	
+	public String getTotalRunningTime(){
+		return "0";
 	}
 
 }
