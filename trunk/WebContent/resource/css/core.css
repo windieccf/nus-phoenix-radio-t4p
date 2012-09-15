@@ -150,6 +150,11 @@ html,body {
 	border-top:1px solid #ccc;
 	padding-top: 10px;
 }
+.calendar  .selectable:hover{
+	background-color: #f5f5f5 !important;
+	cursor: pointer;
+}
+
 .calendar-entry{
 	padding-top: 10px;
 	font-size:12px !important;
