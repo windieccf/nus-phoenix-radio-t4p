@@ -1,11 +1,13 @@
 package sg.edu.nus.iss.t4p.phoenix.entity.user;
 
 import java.util.Date;
+import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column.TYPE;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Table;
 import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
+import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
 
 @SuppressWarnings("serial")
 @Table(name="USER")
@@ -67,6 +69,15 @@ public class User extends BaseEntity{
 	private Date joinDate;
 	public Date getJoinDate() {return joinDate;}
 	public void setJoinDate(Date joinDate) {this.joinDate = joinDate;}
+	
+	private List<Role> roles;
+	public List<Role> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+	
 	
 	
 }
