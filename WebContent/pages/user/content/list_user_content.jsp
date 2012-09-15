@@ -3,17 +3,23 @@
 
 <div class="well background-white well-shadow" style="height:100%;">
 	<form  class="form-horizontal" method="post">
-		<!-- 
 		<fieldset>
-			<legend><fmt:message key="title.program_slot"/></legend>
+			<legend><fmt:message key="title.list_user"/></legend>
 		</fieldset>
-		 -->
+
 		<jsp:include page="/pages/include/messages.jsp" />
 		
 		<div class="row-fluid" >
 			<div class="span12">
-				<table class="calendar">
-					<thead><tr><th>User Name</th><th>Email</th><th>Home No.</th><th>Mobile No.</th></tr></thead>
+				<table class="table">
+					<thead>
+						<tr>
+							<th><fmt:message key="username"/></th>
+							<th><fmt:message key="email"/></th>
+							<th><fmt:message key="home_number_abbr"/></th>
+							<th><fmt:message key="mobile_number_abbr"/></th>
+						</tr>
+					</thead>
 					<tbody>
 					<c:forEach var="item" items="${requestScope.users}" varStatus ="status">
 						<tr>
