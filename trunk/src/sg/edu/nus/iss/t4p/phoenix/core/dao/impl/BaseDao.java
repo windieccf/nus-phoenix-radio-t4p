@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public abstract class BaseDao<T extends BaseEntity> {
 		List<Field> fields = valueObject.getFieldsByType(Column.TYPE.PRIMARY);
 		try (Connection con = this.getConnection(); ) {
 			StringBuffer mySql = new StringBuffer("SELECT * FROM ")
-												.append( TABLE_NAME.get(this.klass.getSimpleName()) )
+												.append( TABLE_NAME.get(this.klass.getName()) )
 												.append(" WHERE 1=1 ");
 			
 			Long pk = null;
@@ -125,7 +126,7 @@ public abstract class BaseDao<T extends BaseEntity> {
 	public List<T> loadAll() throws SQLException{
 		List<T> list = new ArrayList<T>();
 		StringBuffer mySql = new StringBuffer("SELECT * FROM ")
-							.append( TABLE_NAME.get(this.klass.getSimpleName()) );
+							.append( TABLE_NAME.get(this.klass.getName()) );
 		
 		try (Connection con = this.getConnection(); ) {
 			ResultSet rs = con.createStatement().executeQuery(mySql.toString());
@@ -254,7 +255,19 @@ public abstract class BaseDao<T extends BaseEntity> {
 	}
 	
 	public int countAll() throws SQLException{
-		return 0;
+		int result = 0;
+		StringBuffer mySql = new StringBuffer(" SELECT COUNT(1) AS COUNTER FROM " + this.getTableName(klass.getName()));
+		try(Connection con = this.getConnection()){
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(mySql.toString());
+			if(rs.next())
+				result = rs.getInt("COUNTER");
+			
+		}catch(Exception e){
+			throw e;
+		}
+		
+		return result;
 	}
 	
 	public List<T> searchMatching(T valueObject)throws SQLException{
