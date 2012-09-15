@@ -44,7 +44,11 @@
 					<div class="btn-group">
 						<a id="previous-month-id" class="btn btn-info" href="#" title="<fmt:message key="previous"/>"><i class="icon-arrow-left"></i></a>
 						<a class="btn ${requestScope.monthlySchedule.isMonthlyView()? 'active' : ''}" href="#" title="<fmt:message key="month_view"/>" ><i class="icon-calendar"></i></a>
+						<!-- 
 						<a class="btn ${not requestScope.monthlySchedule.isMonthlyView()? 'active' : ''} " href="#" title="<fmt:message key="week_view"/>"><i class="icon-list-alt"></i></a>
+						
+						 -->
+						
 						<a id="next-month-id" class="btn btn-info" href="#" title="<fmt:message key="next"/>"><i class="icon-arrow-right"></i></a>
 					</div>
 				</div>
@@ -67,9 +71,10 @@
 						</tr></thead>
 					<tbody>
 					<c:forEach var="item" items="${requestScope.monthlySchedule.weekSchedules}" varStatus ="status">
-						<tr>
+						<tr class="selectable">
 							<td class="holiday  ${(item.isSameMonth(0,requestScope.monthlySchedule.month)) ?'' :'not-in-month'} " align="left" valign="top">
 								<div>${item.getDateDisplay(0)}</div>
+								<!-- ${item.startDate} -->
 								<div class="calendar-entry">
 									<t4s:monthBadge programCount="${item.programCount[0]}"/>
 								</div>
