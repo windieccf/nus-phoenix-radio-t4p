@@ -49,10 +49,11 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="span4 align-right margin-bottom-10px"> 
-				<a class="btn btn-info" href="#" "><fmt:message key="add_new_slot"/></a>
+				<a class="btn btn-info" href="#"><fmt:message key="add_new_slot"/></a>
 			</div>
+			
 		</div>
 		
 		
