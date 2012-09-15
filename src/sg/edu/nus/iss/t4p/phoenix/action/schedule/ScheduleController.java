@@ -28,6 +28,14 @@ public class ScheduleController extends BaseController {
 		request.getRequestDispatcher("/pages/schedule/list_schedule.jsp").forward(request, response);
 	}
 	
+	protected void doMaintain(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+
+	}
+	
+	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		
+	}
+	
 	private void doPrepareMonthlyView(HttpServletRequest request,	HttpServletResponse response , MonthlySchedule monthlySchedule) throws ServletException, IOException{
 		
 		Calendar cal = new GregorianCalendar();
@@ -56,10 +64,5 @@ public class ScheduleController extends BaseController {
 		request.setAttribute("monthlySchedule", monthlySchedule);
 		
 	}
-	
-	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		
-	}
-	
 	
 }

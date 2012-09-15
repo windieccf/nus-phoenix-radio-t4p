@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.t4p.phoenix.delegate.user;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 import sg.edu.nus.iss.t4p.phoenix.service.user.UserService;
@@ -14,7 +14,7 @@ public class UserDelegate {
 		
 		return instance;
 	}
-	public ArrayList<User> retrieveUserList() {
+	public List<User> retrieveUserList() {
 		return (UserService.getInstance().retrieveUserList());
 	}
 	public User retrieveUser(String username) {

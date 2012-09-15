@@ -17,7 +17,7 @@ public class PhoenixFrontController extends BaseController {
 	@Override
 	protected void processRequest(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		String pathInfo = request.getPathInfo();
-		request.setAttribute("comingFrom", "PhoenixFrontController");
+//		request.setAttribute("comingFrom", "PhoenixFrontController");
 		request.getRequestDispatcher(  UrlPathEnum.getByControlPath(pathInfo).getDestinationPath()  ).forward(request, response);
 	}
 

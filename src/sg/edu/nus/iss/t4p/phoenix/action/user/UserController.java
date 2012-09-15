@@ -1,7 +1,7 @@
 package sg.edu.nus.iss.t4p.phoenix.action.user;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +17,9 @@ import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 public class UserController extends BaseController {
 	
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-
-		ArrayList<User> users = (UserDelegate.getInstance().retrieveUserList());
+		// no pagination?
+		
+		List<User> users = (UserDelegate.getInstance().retrieveUserList());
 				
 		request.setAttribute("users", users);
 		request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);		

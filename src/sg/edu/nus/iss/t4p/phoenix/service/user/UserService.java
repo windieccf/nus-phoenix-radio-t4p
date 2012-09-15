@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.t4p.phoenix.service.user;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
+import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.dao.DaoFactory;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
@@ -14,9 +15,13 @@ public class UserService {
 		
 		return instance;
 	}
-	public ArrayList<User> retrieveUserList() {
-		ArrayList<User> users = DaoFactory.getInstance().getUserDao().retrieveUserList();
-		
+	public List<User> retrieveUserList()  {
+		List<User> users = null;
+		try {
+			users = DaoFactory.getInstance().getUserDao().loadAll();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return users;
 	}
 	public User retrieveUser(String username) {
