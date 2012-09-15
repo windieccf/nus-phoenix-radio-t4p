@@ -26,6 +26,13 @@ public class UserService {
 	}
 	public User retrieveUser(String username) {
 		User user = DaoFactory.getInstance().getUserDao().getByUsername(username);
+		try {
+			user.setRoles(DaoFactory.getInstance().getRoleDao().getRolesByUserId(user.getId()) );
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		 // user
 		
 		return user;
 	}
