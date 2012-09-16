@@ -11,6 +11,13 @@
 			$('#curr-month-id').val( parseInt($('#curr-month-id').val()) + 1 );
 			$('#scheduler-form').submit();
 		});
+		
+		$('.selectable').click(function(){
+			$('#curr-week-id').val( $(this).attr('data-week-number') );
+			$('#scheduler-form').attr('action',  '${pageContext.request.contextPath}/controller/maintainSchedule.do'  );
+			$('#scheduler-form').submit();
+		});
+		
 	});
 </script>
 
@@ -25,6 +32,9 @@
 		<!-- HIDDEN VARIABLE -->
 		<input type="hidden" id="curr-month-id" name="monthlySchedule.month" value="${requestScope.monthlySchedule.month}" />
 		<input type="hidden" id="curr-year-id" name="monthlySchedule.year" value="${requestScope.monthlySchedule.year}"/>
+		<input type="hidden" id="curr-week-id" name="weeklySchedule.weekNumber" value="-1" />
+		
+		
 		
 		<div class="row-fluid" >
 			<div class="span12">
@@ -71,7 +81,7 @@
 						</tr></thead>
 					<tbody>
 					<c:forEach var="item" items="${requestScope.monthlySchedule.weekSchedules}" varStatus ="status">
-						<tr class="selectable">
+						<tr class="selectable" data-week-number="${item.weekNumber}">
 							<td class="holiday  ${(item.isSameMonth(0,requestScope.monthlySchedule.month)) ?'' :'not-in-month'} " align="left" valign="top">
 								<div>${item.getDateDisplay(0)}</div>
 								<!-- ${item.startDate} -->
