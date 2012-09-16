@@ -51,5 +51,18 @@ public class ScheduleService {
 		return monthlySchedule;
 	}
 	
+	
+	public WeeklySchedule getWeeklySlotByDate(Date date)throws BusinessLogicException{
+		return null;
+	}
+	
+	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{
+		
+	}
+	
+	protected void validateSlot(WeeklySchedule weeklySchedule)throws BusinessLogicException{
+		
+	}
+	
 
 }

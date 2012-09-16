@@ -4,6 +4,7 @@ import java.util.Date;
 
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
+import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
 import sg.edu.nus.iss.t4p.phoenix.service.schedule.ScheduleService;
 
 public class ScheduleDelegate {
@@ -20,5 +21,13 @@ public class ScheduleDelegate {
 		return ScheduleService.getInstance().getMonthlySlotByDate(date);
 	}
 	
+	public WeeklySchedule getWeeklySlotByDate(Date date) throws BusinessLogicException{
+//		return ScheduleService.getInstance().getMonthlySlotByDate(date);
+		return null;
+	}
+
+	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{
+		
+	}
 	
 }

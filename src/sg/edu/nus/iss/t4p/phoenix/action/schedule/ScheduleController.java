@@ -29,7 +29,8 @@ public class ScheduleController extends BaseController {
 	}
 	
 	protected void doMaintain(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-
+		
+		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
