@@ -11,6 +11,7 @@ import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.dao.programslot.ProgramSlotDao;
+import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
@@ -56,6 +57,18 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 		
 		
 		return result;
+	}
+	@Override
+	public List<ProgramSlot> getProgramSlotByDateRange(Date dateFrom,
+			Date dateTo) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public boolean isSlotTimeTaken(WeeklySchedule weeklySchedule)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
