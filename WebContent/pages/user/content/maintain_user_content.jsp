@@ -23,6 +23,15 @@
 		 </div>
 		 
 		 <div class="control-group">
+                <label class="control-label">Roles</label> 
+                <div class="controls">
+                	<c:forEach var="item" items="${roles}" varStatus ="status">
+                		<div>${item.role}</div>
+                	</c:forEach>
+                </div>
+		 </div>
+		 
+		 <div class="control-group">
                 <label class="control-label"></label>  
                 <div class="controls align-right" style="width:220px !important;">
                 		<input type="submit" class="btn btn-danger" value="Submit"/> 
