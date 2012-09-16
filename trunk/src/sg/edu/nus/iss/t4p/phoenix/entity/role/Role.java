@@ -17,8 +17,8 @@ public class Role extends BaseEntity{
 
 	@Column(name="ROLE",columnType=TYPE.ORDINARY)
 	private String role;
-	public String getUserid() {return role;}
-	public void setUserid(String role) {this.role = role;}
+	public String getRole() {return role;}
+	public void setRole(String role) {this.role = role;}
 	
 	@Column(name="ACCESS_PRIVILEDGE",columnType=TYPE.ORDINARY)
 	private String accesspriviledge;
