@@ -6,6 +6,8 @@ import sg.edu.nus.iss.t4p.phoenix.dao.role.RoleDao;
 import sg.edu.nus.iss.t4p.phoenix.dao.role.impl.RoleDaoImpl;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.UserDao;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.impl.UserDaoImpl;
+import sg.edu.nus.iss.t4p.phoenix.dao.radioprogram.RadioProgramDao;
+import sg.edu.nus.iss.t4p.phoenix.dao.radioprogram.impl.RadioProgramDaoImpl;
 
 public class DaoFactory {
 	
@@ -15,6 +17,7 @@ public class DaoFactory {
 		this.userDao = UserDaoImpl.getInstance();
 		this.programSlotDao = ProgramSlotDaoImpl.getInstance();
 		this.roleDao = RoleDaoImpl.getInstance();
+		this.radioProgramDao = RadioProgramDaoImpl.getInstance();
 	}
 	public static DaoFactory getInstance(){
 		if(instance == null)
@@ -33,4 +36,6 @@ public class DaoFactory {
 	private RoleDao roleDao;
 	public RoleDao getRoleDao(){ return this.roleDao;}
 	
+	private RadioProgramDao radioProgramDao;
+	public RadioProgramDao getRadioProgramDao(){return this.radioProgramDao;}
 }
