@@ -22,8 +22,7 @@ public class ScheduleDelegate {
 	}
 	
 	public WeeklySchedule getWeeklySlotByDate(Date date) throws BusinessLogicException{
-//		return ScheduleService.getInstance().getMonthlySlotByDate(date);
-		return null;
+		return ScheduleService.getInstance().getWeeklySlotByDate(date);
 	}
 
 	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{

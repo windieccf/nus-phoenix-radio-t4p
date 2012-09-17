@@ -76,15 +76,15 @@
 				<table class="calendar">
 					<thead>
 						<tr>
-							<th><fmt:message key="sunday"/></th><th><fmt:message key="monday"/></th><th><fmt:message key="tuesday"/></th>
-							<th><fmt:message key="wednesday"/></th><th><fmt:message key="thrusday"/></th><th><fmt:message key="friday"/></th><th><fmt:message key="saturday"/></th>
+							<th><fmt:message key="monday"/></th><th><fmt:message key="tuesday"/></th><th><fmt:message key="wednesday"/></th>
+							<th><fmt:message key="thrusday"/></th><th><fmt:message key="friday"/></th><th><fmt:message key="saturday"/></th>
+							<th><fmt:message key="sunday"/></th>
 						</tr></thead>
 					<tbody>
 					<c:forEach var="item" items="${requestScope.monthlySchedule.weekSchedules}" varStatus ="status">
 						<tr class="selectable" data-week-number="${item.weekNumber}">
-							<td class="holiday  ${(item.isSameMonth(0,requestScope.monthlySchedule.month)) ?'' :'not-in-month'} " align="left" valign="top">
+							<td class="${item.isSameMonth(0,requestScope.monthlySchedule.month) ?'' :'not-in-month' }" align="left" valign="top">
 								<div>${item.getDateDisplay(0)}</div>
-								<!-- ${item.startDate} -->
 								<div class="calendar-entry">
 									<t4s:monthBadge programCount="${item.programCount[0]}"/>
 								</div>
@@ -95,6 +95,7 @@
 									<t4s:monthBadge programCount="${item.programCount[1]}"/>
 								</div>
 							</td>
+							
 							<td class="${item.isSameMonth(2,requestScope.monthlySchedule.month) ?'' :'not-in-month' }" align="left" valign="top">
 								<div>${item.getDateDisplay(2)}</div>
 								<div class="calendar-entry">
@@ -113,18 +114,21 @@
 									<t4s:monthBadge programCount="${item.programCount[4]}"/>
 								</div>
 							</td>
-							<td class="${item.isSameMonth(5,requestScope.monthlySchedule.month) ?'' :'not-in-month' }" align="left" valign="top">
+							
+							<td class="holiday ${item.isSameMonth(5,requestScope.monthlySchedule.month) ?'' :'not-in-month'}" align="left" valign="top">
 								<div>${item.getDateDisplay(5)}</div>
 								<div class="calendar-entry">
 									<t4s:monthBadge programCount="${item.programCount[5]}"/>
 								</div>
 							</td>
-							<td class="holiday ${item.isSameMonth(6,requestScope.monthlySchedule.month) ?'' :'not-in-month'}" align="left" valign="top">
+							<td class="holiday  ${(item.isSameMonth(6,requestScope.monthlySchedule.month)) ?'' :'not-in-month'} " align="left" valign="top">
 								<div>${item.getDateDisplay(6)}</div>
+								<!-- ${item.startDate} -->
 								<div class="calendar-entry">
 									<t4s:monthBadge programCount="${item.programCount[6]}"/>
 								</div>
 							</td>
+							
 						</tr>
 					</c:forEach>
 					</tbody>

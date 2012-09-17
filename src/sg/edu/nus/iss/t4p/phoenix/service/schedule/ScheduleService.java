@@ -1,13 +1,16 @@
 package sg.edu.nus.iss.t4p.phoenix.service.schedule;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.dao.DaoFactory;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
+import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
 public class ScheduleService {
@@ -53,7 +56,24 @@ public class ScheduleService {
 	
 	
 	public WeeklySchedule getWeeklySlotByDate(Date date)throws BusinessLogicException{
-		return null;
+		Calendar calFrom = T4DateUtil.getCalendar(date);
+		calFrom = T4DateUtil.rollToFirstDayOfWeek(calFrom);
+		
+		Calendar calTo = T4DateUtil.getOneWeekLater(calFrom.getTime());
+		
+		WeeklySchedule weeklySchedule = new WeeklySchedule();
+		weeklySchedule.setStartDate(calFrom.getTime());
+		weeklySchedule.setWeekNumber(calFrom.get(Calendar.WEEK_OF_YEAR));
+		
+		try {
+			List<ProgramSlot> programSlots =  DaoFactory.getInstance().getProgramSlotDao().getProgramSlotByDateRange(calFrom.getTime(), calTo.getTime());
+			weeklySchedule.setProgramSlots(programSlots);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return weeklySchedule;
 	}
 	
 	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{

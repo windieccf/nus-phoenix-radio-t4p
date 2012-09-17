@@ -10,9 +10,14 @@
 <linkhref="<c:url value='/resource/css/bootstrap-responsive.css'/>"	rel="stylesheet" type="text/css" />
 <link href="<c:url value='/resource/css/bootstrap.css'/>"	rel="stylesheet" type="text/css" />
 <link href="<c:url value='/resource/css/core.css'/>"	rel="stylesheet" type="text/css" />
+<link href="<c:url value='/resource/css/datepicker.css'/>"	rel="stylesheet" type="text/css" />
+<link href="<c:url value='/resource/css/timepicker.css'/>"	rel="stylesheet" type="text/css" />
 
 <script src="<c:url value='/resource/js/jquery-1.8.0.min.js'/>"></script>
 <script src="<c:url value='/resource/js/bootstrap.min.js'/>"></script>
+
+<script src="<c:url value='/resource/js/bootstrap-datepicker.js'/>"></script>
+<script src="<c:url value='/resource/js/bootstrap-timepicker.js'/>"></script>
 
 </head>
 <body>
