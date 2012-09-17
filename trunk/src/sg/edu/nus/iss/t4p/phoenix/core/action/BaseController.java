@@ -60,7 +60,6 @@ public abstract class BaseController extends HttpServlet {
 	 }
 	 
 	 protected void doRedirect(HttpServletRequest request,	HttpServletResponse response, String path) throws IOException{
-		 
 		 response.sendRedirect(request.getContextPath()+"/"+path);
 	 }
 	 

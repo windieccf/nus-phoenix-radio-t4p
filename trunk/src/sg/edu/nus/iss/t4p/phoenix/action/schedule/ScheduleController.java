@@ -2,6 +2,7 @@ package sg.edu.nus.iss.t4p.phoenix.action.schedule;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantAttribute;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.delegate.schedule.ScheduleDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
+import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
+import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/scheduleController/*")
@@ -29,6 +32,22 @@ public class ScheduleController extends BaseController {
 	}
 	
 	protected void doMaintain(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		
+		String yearAsString = request.getParameter("monthlySchedule.year");
+		String weekNumberAsString = request.getParameter("weeklySchedule.weekNumber");
+		
+		Calendar cal = T4DateUtil.getCalendar(new Date());
+		cal.set(Calendar.YEAR, Integer.parseInt(yearAsString));
+		cal.set(Calendar.WEEK_OF_YEAR, Integer.parseInt(weekNumberAsString));
+		
+		WeeklySchedule weeklySchedule = null;
+		try {
+			weeklySchedule = ScheduleDelegate.getInstance().getWeeklySlotByDate(cal.getTime());
+			request.setAttribute("weeklySchedule", weeklySchedule);
+		} catch (BusinessLogicException e) {
+			e.printStackTrace();
+			request.setAttribute(ConstantAttribute.MESSAGE_ERR, e.getMessage());
+		}
 		
 		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);
 	}
