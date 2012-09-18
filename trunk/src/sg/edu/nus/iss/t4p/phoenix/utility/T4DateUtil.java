@@ -12,6 +12,8 @@ public class T4DateUtil {
 	public static final DateFormat DATE_02 = new SimpleDateFormat("dd-MM-yyyy");
 	public static final DateFormat DATE_03 = new SimpleDateFormat("dd MMMM yyyy");
 	
+	public static final DateFormat DATE_TIME_01 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+	
 	public static Calendar rollToFirstDayOfWeek(Calendar cal){
 		while(true){
 			if(Calendar.MONDAY ==  cal.get(Calendar.DAY_OF_WEEK))
