@@ -3,9 +3,11 @@ package sg.edu.nus.iss.t4p.phoenix.dao.user.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
+import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.UserDao;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 
@@ -69,6 +71,18 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 		}
 		
 		return null;
+	}
+
+	@Override
+	public boolean saveUser(String username) {
+		User user = this.getByUsername(username);
+		try {
+			super.merge(user);
+		} catch (SQLException | NotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 	
 	/*public static void main(String... args){

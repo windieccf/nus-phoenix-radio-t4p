@@ -18,13 +18,14 @@
 							<th><fmt:message key="email"/></th>
 							<th><fmt:message key="home_number_abbr"/></th>
 							<th><fmt:message key="mobile_number_abbr"/></th>
+							<th><fmt:message key="user_addr"/></th>
 						</tr>
 					</thead>
 					<tbody>
 					<c:forEach var="item" items="${requestScope.users}" varStatus ="status">
 						<tr>
 							<td align="left" valign="top">
-								<div><a href="<c:url value='/controller/displayUser.do?username=${item.username}'/>">${item.username}</a></div>
+								<div><a href="<c:url value='/controller/initUser.do?username=${item.username}'/>">${item.username}</a></div>
 							</td>
 							<td align="left" valign="top">
 								<div>${item.email}</div>
@@ -34,6 +35,9 @@
 							</td>
 							<td align="left" valign="top">
 								<div>${item.contactMobile}</div>
+							</td>
+							<td align="left" valign="top">
+								<div>${item.address}</div>
 							</td>
 						</tr>
 					</c:forEach>

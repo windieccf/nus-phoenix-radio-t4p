@@ -27,7 +27,7 @@ public class UserController extends BaseController {
 		request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);		
 	}
 	
-	protected void doDisplay(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+	protected void doInit(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 
 		User user = (UserDelegate.getInstance().retrieveUser(request.getParameter("username")));
 		List<Role> roles = (RoleDelegate.getInstance().getRolesByUserId(user.getId()));
@@ -37,6 +37,6 @@ public class UserController extends BaseController {
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		
+		boolean saveStatus = (UserDelegate.getInstance().saveUser(request.getParameter("user.username")));
 	}
 }
