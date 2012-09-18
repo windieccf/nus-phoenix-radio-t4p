@@ -74,8 +74,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	}
 
 	@Override
-	public boolean saveUser(String username) {
-		User user = this.getByUsername(username);
+	public boolean saveUser(User user) {
 		try {
 			super.merge(user);
 		} catch (SQLException | NotFoundException e) {

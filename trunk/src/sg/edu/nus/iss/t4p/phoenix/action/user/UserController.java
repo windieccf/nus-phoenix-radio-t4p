@@ -37,6 +37,16 @@ public class UserController extends BaseController {
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		boolean saveStatus = (UserDelegate.getInstance().saveUser(request.getParameter("user.username")));
+		User user = super.retrieveParameter(request,User.class);
+		boolean saveStatus = (UserDelegate.getInstance().saveUser(user));
+		if (saveStatus) {
+			request.setAttribute("INF", "User saved successfully.");
+			request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);	
+			List<User> users = (UserDelegate.getInstance().retrieveUserList());
+			
+			request.setAttribute("users", users);
+		} else {
+			request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);
+		}
 	}
 }
