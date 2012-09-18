@@ -77,10 +77,45 @@ public class ScheduleService {
 	}
 	
 	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{
-		
+		try{
+			this.validateSlot(weeklySchedule);
+			DaoFactory.getInstance().getProgramSlotDao().persist(weeklySchedule.getProgramSlots());
+			
+		}catch(Exception e){
+			if(e instanceof BusinessLogicException)
+				throw (BusinessLogicException)e;
+			
+			throw new BusinessLogicException(e.getMessage());
+		}
 	}
 	
 	protected void validateSlot(WeeklySchedule weeklySchedule)throws BusinessLogicException{
+		
+		List<ProgramSlot> programSlots = weeklySchedule.getProgramSlots();
+		for(int i = 0; i < programSlots.size(); i++ ){
+			ProgramSlot programSlot = programSlots.get(i);
+			if(!programSlot.isActive())
+				continue;
+			
+			Date startDateTime = programSlot.getStartDateTime();
+			Date endDateTime = programSlot.getEndDateTime();
+			
+			long interval = T4DateUtil.getIntervalInMinutes(startDateTime, endDateTime);
+			if(interval < 30)
+				throw new BusinessLogicException("Program slot must have at least 30 minutes length");
+			
+			// check within the list for non overlapping
+			for(int x = i+1; x < programSlots.size(); x++){
+				ProgramSlot comparedSlot = programSlots.get(x);
+				if(!comparedSlot.isActive())
+					continue;
+				
+				if(T4DateUtil.isOverlap(startDateTime, endDateTime, comparedSlot.getStartDateTime(), comparedSlot.getEndDateTime() ))
+					throw new BusinessLogicException("Program slot time clash at " +T4DateUtil.DATE_TIME_01.format(startDateTime) + " to " + T4DateUtil.DATE_TIME_01.format(endDateTime));
+				
+			}
+			// check if PK is not set, we need to look up the record from database.
+		}
 		
 	}
 	

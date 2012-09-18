@@ -13,5 +13,7 @@ public interface ProgramSlotDao extends BaseDaoIntf<ProgramSlot>{
 	public int[] getMonthlyProgramCountByWeek(Date date) throws SQLException;
 	public List<ProgramSlot> getProgramSlotByDateRange(Date dateFrom , Date dateTo) throws SQLException;
 	public boolean isSlotTimeTaken(WeeklySchedule weeklySchedule) throws SQLException;
+	
+	public void persist(List<ProgramSlot> programSlot)throws SQLException; 
 
 }

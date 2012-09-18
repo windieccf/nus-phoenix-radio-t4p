@@ -52,11 +52,31 @@ public class T4DateUtil {
 		return cal;
 	}
 	
+	public static long getIntervalInMinutes(Date dateFrom, Date dateTo){
+		long difference =  dateTo.getTime() - dateFrom.getTime(); 
+		long minutes = (long) ((difference / (1000*60)) );
+		return minutes;
+	}
+	
+	
 	public static java.sql.Date getSqlDate(Calendar cal){
 		if(cal == null)
 			throw new IllegalArgumentException("T4DateUtil.getSqlDate  cal must not be null");
 		
 		return new java.sql.Date(cal.getTime().getTime());
+	}
+	
+	public static boolean isOverlap(Date dateFrom, Date dateTo, Date compareDateFrom, Date compareDateTo){
+		if(dateFrom.compareTo(compareDateFrom) == 0 || dateTo.compareTo(compareDateTo) == 0)
+			return true;
+		
+		if(dateFrom.before(compareDateFrom))
+			return dateTo.after(compareDateFrom);
+		
+		if(dateFrom.after(compareDateFrom))
+			return dateFrom.before(compareDateTo);
+		
+		return false;
 	}
 
 }

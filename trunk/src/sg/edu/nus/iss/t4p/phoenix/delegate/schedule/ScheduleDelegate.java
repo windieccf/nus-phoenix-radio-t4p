@@ -26,7 +26,7 @@ public class ScheduleDelegate {
 	}
 
 	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{
-		
+		ScheduleService.getInstance().saveWeeklySlot(weeklySchedule);
 	}
 	
 }

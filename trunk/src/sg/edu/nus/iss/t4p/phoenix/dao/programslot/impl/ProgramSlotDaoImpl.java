@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.dao.programslot.ProgramSlotDao;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
@@ -36,7 +37,7 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 		int result[] = new int[7];
 		for(int i = 0; i < 7; i++){
 			String dateParse = "DATE( '"+T4DateUtil.DATE_01.format(calFrom.getTime()) + "' ) ";
-			String mySql = "select "+dateParse+" AS DATE , count(1) AS COUNT from "+super.getTableName(ProgramSlot.class.getName()) + " WHERE DATE(START_DATETIME) = " + dateParse ;
+			String mySql = "select "+dateParse+" AS DATE , count(1) AS COUNT from "+super.getTableName(ProgramSlot.class.getName()) + " WHERE STATUS = '"+ConstantStatus.ACTIVE+"'  AND DATE(START_DATETIME) = " + dateParse ;
 			sqlList.add(mySql);
 			calFrom.add(Calendar.DATE,1);
 		}
@@ -80,24 +81,18 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 										.append(" LEFT OUTER JOIN " + super.getTableName(User.class.getName())+ " UPR  ON UPR.ID = P.PRESENTER_ID ")
 										.append(" LEFT OUTER JOIN " + super.getTableName(User.class.getName())+ " UPO  ON UPO.ID = P.PRODUCER_ID ")
 										.append(" WHERE 1=1 ")
+										.append(" AND P.STATUS = '"+ConstantStatus.ACTIVE+"' ") 
 										.append(" AND DATE(P.START_DATETIME) >= " + dateFromParse )
 										.append(" AND DATE(P.END_DATETIME) <= " + dateToParse)
 										.append(" ORDER BY P.START_DATETIME ASC ");
 			
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
-			
-			
-			
-			
-//			stmt.setDate(1, T4DateUtil.getSqlDate(calFrom));
-//			stmt.setDate(2, T4DateUtil.getSqlDate(calTo));
-			
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
 				ProgramSlot programSlot = super.createValueObject();
 				programSlot.setId(rs.getLong("SLOT_ID"));
-				programSlot.setStartDateTime(rs.getDate("START_DATETIME"));
-				programSlot.setEndDateTime(rs.getDate("END_DATETIME"));
+				programSlot.setStartDateTime(rs.getTimestamp("START_DATETIME"));
+				programSlot.setEndDateTime(rs.getTimestamp("END_DATETIME"));
 				programSlot.setPresenterId(rs.getLong("PRESENTER_ID"));
 				programSlot.setProducerId(rs.getLong("PRODUCER_ID"));
 				programSlot.getPresenter().setFirstName(rs.getString("PRESENTER_NAME"));
@@ -112,11 +107,67 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 		
 		return programSlots;
 	}
+	
 	@Override
-	public boolean isSlotTimeTaken(WeeklySchedule weeklySchedule)
-			throws SQLException {
-		// TODO Auto-generated method stub
+	public boolean isSlotTimeTaken(WeeklySchedule weeklySchedule) throws SQLException {
+		/*List<ProgramSlot> programSlots = weeklySchedule.getProgramSlots();
+		for(ProgramSlot programSlot : programSlots){
+			Date startDateTime = programSlot.getStartDateTime();
+			Date endDateTime = programSlot.getEndDateTime();
+		}*/
+		
 		return false;
+	}
+	
+	
+	public void persist(List<ProgramSlot> programSlots)throws SQLException{
+		String persistSql = " INSERT INTO " +super.getTableName(ProgramSlot.class.getName())+ " (START_DATETIME, END_DATETIME , PRESENTER_ID , PRODUCER_ID , STATUS, CREATED_DATETIME, CREATED_BY_ID ) VALUES (?,?,?,?,?,?,?) ";
+		String updateSql = " UPDATE "+super.getTableName(ProgramSlot.class.getName())+ " SET START_DATETIME = ? , END_DATETIME = ? , PRESENTER_ID =? , PRODUCER_ID=?, STATUS=?, MODIFIED_DATETIME=?, MODIFIED_BY_ID=? WHERE ID =? ";
+		
+		try(Connection con = super.getConnection()){
+			PreparedStatement insertStatement = con.prepareStatement(persistSql);
+			PreparedStatement updateStatement = con.prepareStatement(updateSql);
+			int count = 0;
+			for(ProgramSlot programSlot : programSlots){
+				if(!programSlot.isPkSet()){
+					if(!programSlot.isActive())
+						continue;
+					
+					insertStatement.setObject(1, programSlot.getStartDateTime());
+					insertStatement.setObject(2, programSlot.getEndDateTime());
+					insertStatement.setObject(3, programSlot.getPresenterId());
+					insertStatement.setObject(4, programSlot.getProducerId());
+					insertStatement.setString(5, programSlot.getStatus());
+					insertStatement.setObject(6, new Date());
+					insertStatement.setLong(7, 1);
+					insertStatement.addBatch();
+				}else{
+					updateStatement.setObject(1, programSlot.getStartDateTime());
+					updateStatement.setObject(2, programSlot.getEndDateTime());
+					updateStatement.setObject(3, programSlot.getPresenterId());
+					updateStatement.setObject(4, programSlot.getProducerId());
+					updateStatement.setString(5, programSlot.getStatus());
+					updateStatement.setObject(6, new Date());
+					updateStatement.setLong(7, 1);
+					updateStatement.setLong(8, programSlot.getId());
+					updateStatement.addBatch();
+					
+				}
+				
+				if(++count % 30 == 0) {
+					insertStatement.executeBatch();
+					updateStatement.executeBatch();
+			    }
+			}
+			
+			insertStatement.executeBatch(); // insert remaining records
+			insertStatement.close();
+			
+			updateStatement.executeBatch();
+			updateStatement.close();
+		}catch(Exception e){
+		}
+		
 	}
 
 }

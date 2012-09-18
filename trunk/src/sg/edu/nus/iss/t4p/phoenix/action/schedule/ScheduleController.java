@@ -53,12 +53,19 @@ public class ScheduleController extends BaseController {
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		
+		
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
-		
-		// retrieval of the schedule is done 
-		
-		
-		request.getRequestDispatcher("/").forward(request, response);
+		try {
+			ScheduleDelegate.getInstance().saveWeeklySlot(weeklySchedule);
+		} catch (BusinessLogicException e) {
+			e.printStackTrace();
+			request.setAttribute(ConstantAttribute.MESSAGE_ERR, e.getMessage());
+			request.setAttribute("weeklySchedule", weeklySchedule);
+			request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);
+		}
+		request.setAttribute(ConstantAttribute.MESSAGE_INFO, "Successfully Save");
+		this.doList(request, response);
 	}
 	
 	private void doPrepareMonthlyView(HttpServletRequest request,	HttpServletResponse response , MonthlySchedule monthlySchedule) throws ServletException, IOException{
