@@ -6,7 +6,7 @@ public enum UrlPathEnum {
 	ACTION_LIST_SCHEDULE("/listSchedule.do", "/controller/listSchedule.do" ,"/scheduleController/list.do"),
 	ACTION_MAINTAIN_SCHEDULE("/maintainSchedule.do", "/controller/maintainSchedule.do" ,"/scheduleController/maintain.do"),
 	ACTION_LIST_USER("/listUser.do", "/controller/listUser.do" ,"/userController/list.do"),
-	ACTION_DISPLAY_USER("/displayUser.do", "/controller/displayUser.do" ,"/userController/display.do"),
+	ACTION_DISPLAY_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),
 	
 	PAGE_HOME("/", "/" ,"/");
 	
