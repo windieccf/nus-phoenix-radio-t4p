@@ -16,7 +16,6 @@ import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.delegate.schedule.ScheduleDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
-import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
 @SuppressWarnings("serial")
