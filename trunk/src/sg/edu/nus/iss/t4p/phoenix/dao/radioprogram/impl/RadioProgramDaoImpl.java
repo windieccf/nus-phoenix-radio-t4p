@@ -11,12 +11,20 @@ import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 
 public class RadioProgramDaoImpl extends BaseDao<RadioProgram> implements RadioProgramDao{
 	
+	/** 
+     * Constructor. 
+     * It uses default constructor from super class.
+     */
 	private static RadioProgramDaoImpl instance;
 	private RadioProgramDaoImpl(){
 		/*SINGLETON*/
 		super();
 	}
 	
+	/**
+	 * getInstance-method. This method is used to create a new RadioProgramDaoImpl
+	 * object if it does not exists. 
+	 */
 	public static RadioProgramDaoImpl getInstance(){
 		if(instance == null)
 			instance = new RadioProgramDaoImpl();
@@ -24,6 +32,9 @@ public class RadioProgramDaoImpl extends BaseDao<RadioProgram> implements RadioP
 		return instance;
 	}
 	
+	/* (non-Javadoc)
+	 * @see package sg.edu.nus.iss.t4p.phoenix.dao.radioprogram#retrieveProgramList()
+	 */
 	@Override
 	public ArrayList<RadioProgram> retrieveProgramList(){
 		ArrayList<RadioProgram> programList = new ArrayList<RadioProgram>();
@@ -48,6 +59,9 @@ public class RadioProgramDaoImpl extends BaseDao<RadioProgram> implements RadioP
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see package sg.edu.nus.iss.t4p.phoenix.dao.radioprogram#getByProgramName()
+	 */
 	@Override
 	public RadioProgram getByProgramName(String programName){
 		try( Connection con = super.getConnection() ){
@@ -69,7 +83,4 @@ public class RadioProgramDaoImpl extends BaseDao<RadioProgram> implements RadioP
 		
 		return null;
 	}
-	
-
-
 }
