@@ -46,6 +46,7 @@
         this.modalBackdrop = this.options.modalBackdrop || this.modalBackdrop;
         this.defaultTime = this.options.defaultTime || this.defaultTime;
         this.open = false;
+        this.onTimeChange = this.options.onTimeChange || this.onTimeChange;
         this.init();
     };
 
@@ -432,6 +433,7 @@
         , update: function() {
             this.updateElement();
             this.updateWidget();
+            this.onTimeChange(this);
         }
 
         , blurElement: function() {
@@ -441,7 +443,6 @@
 
         , updateElement: function() {
             var time = this.getTime();
-
             this.$element.val(time).change();
 
             switch (this.highlightedUnit) {
@@ -793,6 +794,7 @@
     , showMeridian: true
     , template: 'dropdown'
     , modalBackdrop: false
+    , onTimeChange : function(){}
     , templates: {} // set custom templates
     }
 
