@@ -16,6 +16,7 @@ import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.delegate.schedule.ScheduleDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
+import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
 @SuppressWarnings("serial")
@@ -53,7 +54,12 @@ public class ScheduleController extends BaseController {
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		
+		// retrieval of the schedule is done 
+		
+		
+		request.getRequestDispatcher("/").forward(request, response);
 	}
 	
 	private void doPrepareMonthlyView(HttpServletRequest request,	HttpServletResponse response , MonthlySchedule monthlySchedule) throws ServletException, IOException{
