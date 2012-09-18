@@ -11,7 +11,7 @@
                 <label class="control-label required-field">User Name</label> 
                 <div class="controls">
                     <label>${user.username}</label>
-                    <input type="hidden" name="user.username" value="${user.username}"/>
+                    <input type="hidden" name="user.id" value="${user.getId().longValue()}"/>
                 </div>
 		 </div>
 		 
@@ -32,7 +32,7 @@
 		  <div class="control-group">
                 <label class="control-label">Date of Birth</label> 
                 <div class="controls">
-                	<input class="required" type="text" name="user.DateOfBirth" value="${user.DateOfBirth}" />
+                	<input class="required" type="text" name="user.DateOfBirth" value="${user.getDateOfBirth().toString()}" />
                 </div>
 		 </div>
 		 

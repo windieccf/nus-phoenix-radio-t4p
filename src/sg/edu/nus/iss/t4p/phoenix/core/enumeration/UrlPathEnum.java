@@ -9,7 +9,8 @@ public enum UrlPathEnum {
 	ACTION_SAVE_SCHEDULE("/saveSchedule.do", "/controller/saveSchedule.do" ,"/scheduleController/save.do"),
 	
 	ACTION_LIST_USER("/listUser.do", "/controller/listUser.do" ,"/userController/list.do"),
-	ACTION_DISPLAY_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),
+	ACTION_INIT_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),
+	ACTION_SAVE_USER("/saveUser.do", "/controller/saveUser.do" ,"/userController/save.do"),
 	
 	PAGE_HOME("/", "/" ,"/");
 	

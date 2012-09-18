@@ -20,8 +20,8 @@ public class UserDelegate {
 	public User retrieveUser(String username) {
 		return (UserService.getInstance().retrieveUser(username));
 	}
-	public boolean saveUser(String username) {
-		return (UserService.getInstance().saveUser(username));
+	public boolean saveUser(User user) {
+		return (UserService.getInstance().saveUser(user));
 	}
 
 }

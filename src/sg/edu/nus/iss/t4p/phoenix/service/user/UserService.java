@@ -36,8 +36,8 @@ public class UserService {
 		
 		return user;
 	}
-	public boolean saveUser(String username) {
-		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(username);	
+	public boolean saveUser(User user) {
+		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user);	
 		return saveStatus;
 	}
 }
