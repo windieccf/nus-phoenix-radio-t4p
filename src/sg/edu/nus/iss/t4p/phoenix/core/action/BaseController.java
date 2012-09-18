@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
@@ -82,7 +84,9 @@ public abstract class BaseController extends HttpServlet {
 			 
 			 Constructor<T> constructor = klass.getConstructor();
 			 T t = constructor.newInstance();
-			 Field[] fields = klass.getDeclaredFields();
+			 
+			 List<Field> fields = (t instanceof BaseEntity) ? ((BaseEntity)t).getAllField() : Arrays.asList(klass.getDeclaredFields());
+//			 Field[] fields = klass.getDeclaredFields();
 			 for(Field field : fields){
 				 if(field.getClass().getModifiers() == Modifier.FINAL || field.getClass().getModifiers() == Modifier.STATIC)
 					continue;
@@ -114,31 +118,34 @@ public abstract class BaseController extends HttpServlet {
 	 private <T> List<T> retrieveListParam(HttpServletRequest request, Class<T> klass, String parentFieldName){
 		 List<T> paramList = new ArrayList<T>();
 		 
-		 Field[] fields =  klass.getDeclaredFields();
-		 int paramLength = 0;
-		 for(Field field : fields){
-			 if(field.getClass().getModifiers() == Modifier.FINAL || field.getClass().getModifiers() == Modifier.STATIC)
-					continue;
-			 
-			 String listFieldName = parentFieldName + "."+ field.getName();
-			 if(request.getParameterValues(listFieldName)!=null){
-				 int requestLength = request.getParameterValues(listFieldName).length;
-				 if(requestLength > paramLength)
-					 paramLength = requestLength;
-			 }
-			 
-		 }
 		 
 		 try{
 			 Constructor<T> constructor = klass.getConstructor();
+			 T t = constructor.newInstance();
+			 List<Field> fields = (t instanceof BaseEntity) ? ((BaseEntity)t).getAllField() : Arrays.asList(klass.getDeclaredFields());
+			 int paramLength = 0;
+			 for(Field field : fields){
+				 if(field.getClass().getModifiers() == Modifier.FINAL || field.getClass().getModifiers() == Modifier.STATIC)
+						continue;
+				 
+				 String listFieldName = parentFieldName + "."+ field.getName();
+				 if(request.getParameterValues(listFieldName)!=null){
+					 int requestLength = request.getParameterValues(listFieldName).length;
+					 if(requestLength > paramLength)
+						 paramLength = requestLength;
+				 }
+				 
+			 }
+			 
+			 
 			 for(int i = 0; i <paramLength; i++){
-				 T t = constructor.newInstance();
+				 t = constructor.newInstance();
 				 for(Field field : fields){
 					 if(field.getClass().getModifiers() == Modifier.FINAL || field.getClass().getModifiers() == Modifier.STATIC)
 							continue;
 					 
 					 String listFieldName = parentFieldName + "."+ field.getName();
-					 if(request.getParameterValues(listFieldName)==null)
+					 if(request.getParameterValues(listFieldName)==null || i > request.getParameterValues(listFieldName).length - 1)
 						 continue;
 					 
 					 String value = request.getParameterValues(listFieldName)[i];

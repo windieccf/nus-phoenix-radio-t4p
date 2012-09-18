@@ -66,9 +66,25 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 
 			klazz = klazz.getSuperclass();
 		}
-		
-		
-		
+		return fields;
+	}
+	
+	public List<Field> getAllField(){
+		List<Field> fields = new ArrayList<Field>();
+		Class<?> klazz = this.getClass(); 
+		while(true){
+			Field fieldArray[] = klazz.getDeclaredFields();
+			for(Field field : fieldArray){
+				if(field.getClass().getModifiers() == Modifier.FINAL || field.getClass().getModifiers() == Modifier.STATIC)
+					continue;
+				
+				fields.add(field);
+			}
+			if(klazz.getSimpleName().endsWith("BaseEntity"))
+				break;
+
+			klazz = klazz.getSuperclass();
+		}
 		return fields;
 	}
 	
@@ -91,9 +107,10 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 	
 	/************************************ SHARED FIELD ********************************************************/
 	@Column(name="STATUS",columnType=TYPE.ORDINARY)
-	private String status;
+	private String status = ConstantStatus.ACTIVE;
 	public String getStatus() {return status;}
 	public void setStatus(String status) {this.status = status;}
+	public boolean isActive(){return ConstantStatus.ACTIVE.equals(this.getStatus());}
 	
 	@Column(name="CREATED_DATETIME",columnType=TYPE.ORDINARY)
 	private Date createdDateTime;
