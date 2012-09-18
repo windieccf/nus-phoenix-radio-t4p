@@ -19,13 +19,13 @@
 						</tr>
 					</thead>
 					<tbody>
-					<c:forEach var="item" items="${requestScope.programList}" varStatus ="status">
+					<c:forEach var="item" items="${requestScope.radioprograms}" varStatus ="status">
 						<tr>
 							<td align="left" valign="top">
-								<div><a href="<c:url value='/controller/displayRadioProgram.do?programName=${item.program_name}'/>">${item.program_name}</a></div>
+								<div>${item.programName}</div>
 							</td>
 							<td align="left" valign="top">
-								<div>${item.program_desc}</div>
+								<div>${item.programDesc}</div>
 							</td>
 						</tr>
 					</c:forEach>
