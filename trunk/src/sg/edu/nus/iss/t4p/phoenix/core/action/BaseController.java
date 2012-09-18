@@ -164,6 +164,8 @@ public abstract class BaseController extends HttpServlet {
 		 if(field.getType().isPrimitive()){
 			 if(dataType.equals(Integer.TYPE))
 				 return Integer.parseInt(value);
+			 else if (dataType.equals(Long.TYPE))
+				 return Long.parseLong(value);
 			 else if (dataType.equals(Double.TYPE))
 				 return Double.parseDouble(value);
 			 else if (dataType.equals(Float.TYPE))
@@ -171,6 +173,8 @@ public abstract class BaseController extends HttpServlet {
 		 }else{
 			 if(dataType.equals(Integer.class))
 				 return Integer.parseInt(value);
+			 else if (dataType.equals(Long.class))
+				 return Long.parseLong(value);
 			 else if (dataType.equals(Double.class))
 				 return Double.parseDouble(value);
 			 else if (dataType.equals(Float.class))
