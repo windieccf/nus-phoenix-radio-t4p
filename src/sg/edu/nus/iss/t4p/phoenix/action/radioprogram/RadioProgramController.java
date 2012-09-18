@@ -14,13 +14,13 @@ import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 
 
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = "/radiorogramController/*")
+@WebServlet(urlPatterns = "/radioprogramController/*")
 public class RadioProgramController extends BaseController {
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		
-		List<RadioProgram> programList = RadioProgramDelegate.getInstance().retrieveProgramList();
+		List<RadioProgram> radioprograms = RadioProgramDelegate.getInstance().retrieveProgramList();
 				
-		request.setAttribute("programList", programList);
+		request.setAttribute("radioprograms", radioprograms);
 		request.getRequestDispatcher("/pages/radioprogram/list_radioprogram.jsp").forward(request, response);		
 	}
 	
