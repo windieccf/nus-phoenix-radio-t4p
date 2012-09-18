@@ -25,10 +25,14 @@
 				$(this).removeClass('btn-success');
 				$(this).addClass('btn-danger');
 				$(this).text('<fmt:message key="delete" />');
+				$(':last-child' , $(this).parent() ).val('D');
+				
+				
 			}else{
 				$(this).removeClass('btn-danger');
 				$(this).addClass('btn-success');
 				$(this).text('<fmt:message key="active" />');
+				$(':last-child' , $(this).parent() ).val('A');
 			}
 		},
 		
@@ -44,7 +48,7 @@
 		
 		/** GLOBAL ********************************/
 		var datePickerParameter = {format: 'dd-mm-yyyy',startDate : '${requestScope.weeklySchedule.startDateAsDisplay}',endDate : '${requestScope.weeklySchedule.endDateAsDisplay}'};
-		var timePickerParameter = { minuteStep: 30, showInputs: false, disableFocus: true, showMeridian : false , onTimeChange : _onTimeChange};
+		var timePickerParameter = { minuteStep: 30, showInputs: false, disableFocus: true, showMeridian : false , defaultTime: 'value' , onTimeChange : _onTimeChange};
 		/** GLOBAL END********************************/
 
 		
@@ -76,6 +80,9 @@
 
 <div class="well background-white well-shadow" style="height:100%;">
 	<form  id="scheduler-form" action="${pageContext.request.contextPath}/controller/saveSchedule.do" class="form-horizontal" method="post">
+		<input type="hidden" name="weeklySchedule.startDate" value="<fmt:formatDate value="${requestScope.weeklySchedule.startDate}" pattern="dd-MM-yyyy HH:mm" /> "/>
+		<input type="hidden" name="weeklySchedule.weekNumber" value="${requestScope.weeklySchedule.weekNumber}"/>
+									
 		<fieldset>
 			<legend><fmt:message key="program_slot_maintenance"/></legend>
 		</fieldset>
@@ -90,6 +97,8 @@
 			</div>
 			<div class="span7 align-right">
 				<a id="add-new-button" class="btn btn-info"><fmt:message key="add_new_slot" /></a>
+				<a id="add-new-button" class="btn btn-info"><fmt:message key="populate_slot" /></a>
+				
 				<a id="save-button" class="btn btn-primary"><fmt:message key="save" /></a>
 				|
 				<a href="<c:url value='/controller/listSchedule.do'/>" class="btn btn-danger" ><fmt:message key="cancel" /></a>
@@ -115,13 +124,14 @@
 							<tr>
 								<td align="left" valign="top" width="20%">
 									<input class="input-small date-picker" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy" /> ">
-									<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="hh:mm" />" />
-									<input type="hidden" name="weeklySchedule.programSlots.startDateTime" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy hh:mm" /> "/>
+									<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="HH:mm" />" />
+									<input type="hidden" name="weeklySchedule.programSlots.id" value="${item.id}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.startDateTime" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy HH:mm" /> "/>
 								</td>
 								<td align="left" valign="top" width="20%">
 									<input class=" input-small date-picker" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy" /> ">
-									<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="hh:mm" />" />
-									<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy hh:mm" />"/>
+									<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="HH:mm" />" />
+									<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy HH:mm" />"/>
 								</td>
 								<td align="left" valign="top">
 									<span><i class="icon-headphones" style="cursor: pointer;"></i>&nbsp;Radio program&nbsp;</span>
@@ -156,13 +166,13 @@
 		<tr id="template-input">
 			<td align="left" valign="top" width="20%">
 				<input class="input-small date-picker" type="text" value="${requestScope.weeklySchedule.startDateAsDisplay}" pattern="dd-MM-yyyy" /> 
-				<input class="time-picker input-mini" type="text" value="00:00" pattern="hh:mm" action="_onTimeChange" />
-				<input type="text" name="weeklySchedule.programSlots.startDateTime" value="${requestScope.weeklySchedule.startDateAsDisplay} 00:00"/>
+				<input class="time-picker input-mini" type="text" value="00:00" pattern="HH:mm" action="_onTimeChange" />
+				<input type="hidden" name="weeklySchedule.programSlots.startDateTime" value="${requestScope.weeklySchedule.startDateAsDisplay} 00:00"/>
 			</td>
 			<td align="left" valign="top" width="20%">
 				<input class="input-small date-picker" type="text" value="${requestScope.weeklySchedule.startDateAsDisplay}" pattern="dd-MM-yyyy" /> 
-				<input class="time-picker input-mini" type="text" value="00:00" pattern="hh:mm" action="_onTimeChange" />
-				<input type="text" name="weeklySchedule.programSlots.endDateTime" value="${requestScope.weeklySchedule.startDateAsDisplay} 00:00"/>
+				<input class="time-picker input-mini" type="text" value="00:00" pattern="HH:mm" action="_onTimeChange" />
+				<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="${requestScope.weeklySchedule.startDateAsDisplay} 00:00"/>
 			</td>
 			<td align="left" valign="top">
 				<span><i class="icon-headphones" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
