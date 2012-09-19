@@ -23,6 +23,7 @@ public enum UrlPathEnum {
 	ACTION_CALLBACK_PRODUCER_SCHEDULE("/callBackProducer.do", "/controller/callBackProducer.do" ,"/scheduleController/callBackProducer.do"),
 	
 	ACTION_PICK_RADIO_LIST("/pickRadioList.do", "/controller/pickRadioList.do" ,"/radioprogramController/list.do"),
+	ACTION_SELECT_RADIO_LIST("/selectRadioProgram.do", "/controller/selectRadioProgram.do" ,"/radioprogramController/selectRadioProgram.do"),
 	
 	ACTION_LIST_USER("/listUser.do", "/controller/listUser.do" ,"/userController/list.do"),
 	ACTION_INIT_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),

@@ -130,7 +130,7 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 	
 	
 	public void persist(List<ProgramSlot> programSlots)throws SQLException{
-		String persistSql = " INSERT INTO " +super.getTableName(ProgramSlot.class.getName())+ " (START_DATETIME, END_DATETIME , RADIO_PROGRAM_ID, PRESENTER_ID , PRODUCER_ID , STATUS, CREATED_DATETIME, CREATED_BY_ID ) VALUES (?,?,?,?,?,?,?) ";
+		String persistSql = " INSERT INTO " +super.getTableName(ProgramSlot.class.getName())+ " (START_DATETIME, END_DATETIME , RADIO_PROGRAM_ID, PRESENTER_ID , PRODUCER_ID , STATUS, CREATED_DATETIME, CREATED_BY_ID ) VALUES (?,?,?,?,?,?,?,?) ";
 		String updateSql = " UPDATE "+super.getTableName(ProgramSlot.class.getName())+ " SET START_DATETIME = ? , END_DATETIME = ? , RADIO_PROGRAM_ID=?, PRESENTER_ID =? , PRODUCER_ID=?, STATUS=?, MODIFIED_DATETIME=?, MODIFIED_BY_ID=? WHERE ID =? ";
 		
 		try(Connection con = super.getConnection()){
@@ -177,6 +177,9 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 			updateStatement.executeBatch();
 			updateStatement.close();
 		}catch(Exception e){
+			e.printStackTrace();
+			throw e;
+			
 		}
 		
 	}
