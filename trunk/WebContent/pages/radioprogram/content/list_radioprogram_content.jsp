@@ -8,6 +8,7 @@
 			$('#radio-program-id').val( $(this).attr('data-id'));
 			$('#radio-program-name').val( $(this).attr('data-name'));
 			$('#radio-program-desc').val( $(this).attr('data-desc'));
+			$('#radio-program-duration').val( $(this).attr('data-duration'));
 			$('#select-form').submit();
 		});
 	});
@@ -26,6 +27,7 @@
 		<input type="hidden" id="radio-program-id" name="radioProgram.id" value="" />
 		<input type="hidden" id="radio-program-name" name="radioProgram.programName" value="" />
 		<input type="hidden" id="radio-program-desc" name="radioProgram.programDescription" value="" />
+		<input type="hidden" id="radio-program-duration" name="radioProgram.typicalDuration" value=""/>
 		
 		<div class="row-fluid" >
 			<div class="span12">
@@ -34,6 +36,7 @@
 						<tr>
 							<th><fmt:message key="label.radioprogram.name"/></th>
 							<th><fmt:message key="label.radioprogram.description"/></th>
+							<th><fmt:message key="label.radioprogram.duration"></fmt:message>
 							<th><fmt:message key="action"/></th>
 						</tr>
 					</thead>
@@ -45,6 +48,9 @@
 							</td>
 							<td align="left" valign="top">
 								<div>${item.programDesc}</div>
+							</td>
+							<td align="left" valign="top">
+								<div>${item.typicalDuration}</div>
 							</td>
 							<td align="left" valign="top">
 								<a class="btn btn-primary select-button" data-id="${item.id}" data-name="${item.programName}" data-desc="${item.programDesc}">
