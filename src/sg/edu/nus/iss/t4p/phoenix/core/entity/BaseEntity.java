@@ -160,6 +160,8 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 	private String selected = ConstantStatus.NO;
 	public String getSelected() {return selected;}
 	public void setSelected(String selected) {this.selected = selected;}
+	public boolean isSelected(){return ConstantStatus.YES.equals(selected);}
+	public void toggleSelected(){this.selected = (this.isSelected()) ? ConstantStatus.NO : ConstantStatus.YES;}
 	
 	
 }

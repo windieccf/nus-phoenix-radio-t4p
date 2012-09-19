@@ -15,8 +15,10 @@ import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantAttribute;
 import sg.edu.nus.iss.t4p.phoenix.core.enumeration.UrlPathEnum;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.delegate.schedule.ScheduleDelegate;
+import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
+import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
 /**
@@ -127,18 +129,38 @@ public class ScheduleController extends BaseController {
 			request.setAttribute(ConstantAttribute.MESSAGE_ERR, e.getMessage());
 		}
 		request.setAttribute("monthlySchedule", monthlySchedule);
-		
 	}
 	
 	/** PICK AND CALL BACK RELATED **********************************************************/ 
 	protected void doPickRadioProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
-		request.setAttribute(ConstantAttribute.CALL_BACK_URL, UrlPathEnum.ACTION_CALLBACK_RADIO_SCHEDULE);
+		request.setAttribute(ConstantAttribute.CALL_BACK_URL, UrlPathEnum.ACTION_CALLBACK_RADIO_SCHEDULE.getFrontControlPath());
 		request.getRequestDispatcher(UrlPathEnum.ACTION_PICK_RADIO_LIST.getFrontControlPath()).forward(request, response);
 	}
 	
 	protected void doCallBackRadioProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		RadioProgram radioProgram = (RadioProgram)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
+		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
+		request.getSession().removeAttribute(ConstantAttribute.FLASH_SESSION);
+		
+		for(ProgramSlot programSlot : weeklySchedule.getProgramSlots()){
+			if(programSlot.isSelected()){
+				programSlot.setRadioProgram(radioProgram);
+				programSlot.setRadioProgramId(radioProgram.getId());
+				programSlot.toggleSelected();
+			}
+		}
+		request.setAttribute("weeklySchedule", weeklySchedule);
+		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);
+		
+	}
+	
+	protected void doPickScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		
+	}
+	
+	protected void doCallBackScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		
 	}
 	
@@ -146,11 +168,12 @@ public class ScheduleController extends BaseController {
 		
 	}
 	
-	protected void doPickProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+	protected void doCallBackPresenter(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		
 	}
 	
-	protected void doCallBackPresenter(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+	
+	protected void doPickProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		
 	}
 	

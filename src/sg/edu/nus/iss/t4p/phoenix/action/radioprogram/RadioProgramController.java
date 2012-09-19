@@ -9,21 +9,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sg.edu.nus.iss.t4p.phoenix.core.action.BaseController;
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantAttribute;
 import sg.edu.nus.iss.t4p.phoenix.delegate.radioprogram.RadioProgramDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
+import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/radioprogramController/*")
 public class RadioProgramController extends BaseController {
+	
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 
 		List<RadioProgram> radioprograms = RadioProgramDelegate.getInstance().retrieveProgramList();
-				
+		String callBackUrl = (String) request.getAttribute(ConstantAttribute.CALL_BACK_URL);
+		if(T4StringUtil.isEmpty(callBackUrl))
+			callBackUrl = request.getParameter(ConstantAttribute.CALL_BACK_URL);
+			
+		request.setAttribute(ConstantAttribute.CALL_BACK_URL, callBackUrl);
+		
 		request.setAttribute("radioprograms", radioprograms);
 		request.getRequestDispatcher("/pages/radioprogram/list_radioprogram.jsp").forward(request, response);		
 	}
 	
+	
+	
+	protected void doSelectRadioProgram(HttpServletRequest request,	HttpServletResponse response)throws ServletException, IOException{
+		RadioProgram radioProgram = super.retrieveParameter(request, RadioProgram.class);
+		String callBackUrl = request.getParameter(ConstantAttribute.CALL_BACK_URL);
+		request.setAttribute(ConstantAttribute.SELECTED_ITEM, radioProgram);
+		request.getRequestDispatcher(callBackUrl).forward(request, response);	
+	}
 	/*
 	protected void doDisplay(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
         RadioProgram program = (RadioProgramDelegate.getInstance()).getByProgramName(request.getParameter("programName"));
