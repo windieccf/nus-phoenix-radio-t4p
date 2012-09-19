@@ -25,14 +25,14 @@
 				$(this).removeClass('btn-success');
 				$(this).addClass('btn-danger');
 				$(this).text('<fmt:message key="delete" />');
-				$(':last-child' , $(this).parent() ).val('D');
-				
-				
+				$(':nth-child(2)',  $(this).parent()).val('D');
+				//$(':last-child' , $(this).parent() ).val('D');
 			}else{
 				$(this).removeClass('btn-danger');
 				$(this).addClass('btn-success');
 				$(this).text('<fmt:message key="active" />');
-				$(':last-child' , $(this).parent() ).val('A');
+				$(':nth-child(2)',  $(this).parent()).val('A');
+				//$(':last-child' , $(this).parent() ).val('A');
 			}
 		},
 		
@@ -42,8 +42,27 @@
 			var time = e.$element.val() ; 
 			var inputHidden = $(':last-child' , $(currTarget).parent());
 			_updateDateTime(inputHidden, date, time);
-		}
+		},
 		
+		_onRadioProgramClicked = function(){
+			_onSelectableClick(this, '${pageContext.request.contextPath}/controller/pickRadioProgram.do');
+		},
+		
+		_onPresenterClicked = function(){
+			_onSelectableClick(this, '${pageContext.request.contextPath}/controller/pickPresenter.do');
+		},
+		
+		_onProducerClicked = function(){
+			_onSelectableClick(this, '${pageContext.request.contextPath}/controller/pickProducer.do');
+		},
+		
+		_onSelectableClick = function(el,urlPath){
+			var tr = $(el).parent().parent().parent();
+			var lastTd = $('td:last-child' , tr );
+			$(':last-child' , lastTd ).val('Y');
+			$('#scheduler-form').attr('action',  urlPath  );
+			$('#scheduler-form').submit(); 
+		}
 		/** private function end************************************************/
 		
 		/** GLOBAL ********************************/
@@ -52,10 +71,13 @@
 		/** GLOBAL END********************************/
 
 		
-		
 		$('.date-picker').datepicker(datePickerParameter).on('changeDate', _onDateChange);
 		$('.time-picker').timepicker(timePickerParameter);
 		$('.status-button').click(_onStatusChange);
+		
+		$('.radio-program-button').click(_onRadioProgramClicked);
+		$('.presenter-button').click(_onPresenterClicked);
+		$('.producer-button').click(_onProducerClicked);
 		
 		$('#save-button').click(function(){ 
 			$('#scheduler-form').submit(); 
@@ -67,11 +89,15 @@
 			
 			$('.date-picker',templateInput).datepicker(datePickerParameter).on('changeDate', _onDateChange);
 			$('.time-picker', templateInput).timepicker(timePickerParameter);
+			
+			$('.radio-program-button', templateInput).click(_onRadioProgramClicked);
+			$('.presenter-button' , templateInput).click(_onPresenterClicked);
+			$('.producer-button', templateInput).click(_onProducerClicked);
 
 			$('.status-button' , templateInput).click(_onStatusChange);
 			
 			$(templateInput).removeAttr('id');
-			$('#program-slot-table').append(templateInput);
+			$('#program-slot-table').prepend(templateInput);
 		});
 		
 		
@@ -134,20 +160,21 @@
 									<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy HH:mm" />"/>
 								</td>
 								<td align="left" valign="top">
-									<span><i class="icon-headphones" style="cursor: pointer;"></i>&nbsp;Radio program&nbsp;</span>
+									<span><i class="icon-headphones radio-program-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.radioProgram.programName}"/>&nbsp;</span>
 									<input type="hidden" name="weeklySchedule.programSlots.radioProgramId" value="${item.presenterId}"/>
 								</td>
 								<td align="left" valign="top">
-									<span><i class="icon-user" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.presenter.firstName}"/>&nbsp;</span>
+									<span><i class="icon-user presenter-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.presenter.firstName}"/>&nbsp;</span>
 									<input type="hidden" name="weeklySchedule.programSlots.presenterId" value="${item.presenterId}"/>
 								</td>
 								<td align="left" valign="top">
-									<span ><i class="icon-user" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.producer.firstName}"/>&nbsp;</span>
+									<span ><i class="icon-user producer-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.producer.firstName}"/>&nbsp;</span>
 									<input type="hidden" name="weeklySchedule.programSlots.producerId" value="${item.presenterId}"/>
 								</td>
 								<td align="left" valign="top">
 									<a class="btn btn-success status-button"><fmt:message key="active" /></a>
 									<input type="hidden" name="weeklySchedule.programSlots.status" value="${item.status}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.selected" value="N"/>
 								</td>
 							</tr>
 						</c:forEach>
@@ -167,6 +194,7 @@
 			<td align="left" valign="top" width="20%">
 				<input class="input-small date-picker" type="text" value="${requestScope.weeklySchedule.startDateAsDisplay}" pattern="dd-MM-yyyy" /> 
 				<input class="time-picker input-mini" type="text" value="00:00" pattern="HH:mm" action="_onTimeChange" />
+				<input type="hidden" name="weeklySchedule.programSlots.id" value=""/>
 				<input type="hidden" name="weeklySchedule.programSlots.startDateTime" value="${requestScope.weeklySchedule.startDateAsDisplay} 00:00"/>
 			</td>
 			<td align="left" valign="top" width="20%">
@@ -175,20 +203,21 @@
 				<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="${requestScope.weeklySchedule.startDateAsDisplay} 00:00"/>
 			</td>
 			<td align="left" valign="top">
-				<span><i class="icon-headphones" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
+				<span><i class="icon-headphones radio-program-button" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
 				<input type="hidden" name="weeklySchedule.programSlots.radioProgramId" value="${item.presenterId}"/>
 			</td>
 			<td align="left" valign="top">
-				<span><i class="icon-user" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
+				<span><i class="icon-user presenter-button" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
 				<input type="hidden" name="weeklySchedule.programSlots.presenterId" value="${item.presenterId}"/>
 			</td>
 			<td align="left" valign="top">
-				<span ><i class="icon-user" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
+				<span ><i class="icon-user producer-button" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
 				<input type="hidden" name="weeklySchedule.programSlots.producerId" value="${item.presenterId}"/>
 			</td>
 			<td align="left" valign="top">
 				<a class="btn btn-success status-button"><fmt:message key="active" /></a>
 				<input type="hidden" name="weeklySchedule.programSlots.status" value="A"/>
+				<input type="hidden" name="weeklySchedule.programSlots.selected" value="N"/>					
 			</td>
 		</tr>
 	

@@ -6,7 +6,6 @@ import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 
 public class AuthenticateService {
 	
-	// TODO :: localize the message
 	public User authenticateUser(User user) throws BusinessLogicException{
 		String password = user.getPassword();
 		

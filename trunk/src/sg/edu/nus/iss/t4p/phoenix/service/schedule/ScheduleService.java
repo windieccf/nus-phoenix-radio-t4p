@@ -13,6 +13,11 @@ import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
+/**
+* Service class for Scheduler
+* @author Robin Foe A0092657U
+* @version 1.0
+*/
 public class ScheduleService {
 	
 	public static ScheduleService instance;
@@ -24,6 +29,13 @@ public class ScheduleService {
 		return instance;
 	}
 	
+	
+	/**
+	 * This method return monthlySchedule from database
+	 * @param date the java.util.Date of the month
+	 * @return sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule
+	 * @exception sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException
+	 */
 	public MonthlySchedule getMonthlySlotByDate(Date date) throws BusinessLogicException{
 		Calendar cal = T4DateUtil.getCalendar(date);
 		MonthlySchedule monthlySchedule = new MonthlySchedule();
@@ -55,6 +67,13 @@ public class ScheduleService {
 	}
 	
 	
+	
+	/**
+	 * This method return weekly schedule from database
+	 * @param date the java.util.Date of the month
+	 * @return sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule
+	 * @exception sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException
+	 */
 	public WeeklySchedule getWeeklySlotByDate(Date date)throws BusinessLogicException{
 		Calendar calFrom = T4DateUtil.getCalendar(date);
 		calFrom = T4DateUtil.rollToFirstDayOfWeek(calFrom);
@@ -76,6 +95,13 @@ public class ScheduleService {
 		return weeklySchedule;
 	}
 	
+	
+	/**
+	 * This method perform save and update of the program slot
+	 * @param weeklySchedule sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule
+	 * @exception sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException
+	 * @see ScheduleService.validateSlot
+	 */
 	public void saveWeeklySlot(WeeklySchedule weeklySchedule) throws BusinessLogicException{
 		try{
 			this.validateSlot(weeklySchedule);
@@ -89,6 +115,11 @@ public class ScheduleService {
 		}
 	}
 	
+	/**
+	 * This method perform validation logic for program slot
+	 * @param weeklySchedule sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule
+	 * @exception sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException
+	 */
 	protected void validateSlot(WeeklySchedule weeklySchedule)throws BusinessLogicException{
 		
 		List<ProgramSlot> programSlots = weeklySchedule.getProgramSlots();

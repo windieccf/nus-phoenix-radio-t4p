@@ -11,11 +11,12 @@
 		
 		<div class="row-fluid" >
 			<div class="span12">
-				<table class="table">
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th><fmt:message key="label.radioprogram.name"/></th>
 							<th><fmt:message key="label.radioprogram.description"/></th>
+							<th><fmt:message key="action"/></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -26,6 +27,9 @@
 							</td>
 							<td align="left" valign="top">
 								<div>${item.programDesc}</div>
+							</td>
+							<td align="left" valign="top">
+								<a class="btn btn-primary"><fmt:message key="select" /></a>
 							</td>
 						</tr>
 					</c:forEach>

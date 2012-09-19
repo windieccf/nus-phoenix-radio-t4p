@@ -6,6 +6,10 @@ import java.util.List;
 import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
 
+/**
+* @author Robin Foe A0092657U
+* @version 1.0
+*/
 public interface BaseDaoIntf <T extends BaseEntity> {
 	
 	/**

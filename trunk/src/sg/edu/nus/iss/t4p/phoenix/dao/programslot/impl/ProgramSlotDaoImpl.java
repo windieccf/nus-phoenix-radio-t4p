@@ -13,6 +13,7 @@ import java.util.List;
 import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.dao.programslot.ProgramSlotDao;
+import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
@@ -76,8 +77,10 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 		
 		try(Connection con = super.getConnection()){
 			StringBuffer mySql = new StringBuffer("SELECT P.ID AS SLOT_ID, P.START_DATETIME AS START_DATETIME, P.END_DATETIME AS END_DATETIME,  " )
-										.append(" UPR.ID AS PRESENTER_ID, UPR.FIRST_NAME AS PRESENTER_NAME , UPO.ID AS PRODUCER_ID, UPO.LAST_NAME AS PRODUCER_NAME ")
+										.append(" UPR.ID AS PRESENTER_ID, UPR.FIRST_NAME AS PRESENTER_NAME , UPO.ID AS PRODUCER_ID, UPO.LAST_NAME AS PRODUCER_NAME, ")
+										.append(" RDP.ID AS RADIO_PROGRAM_ID , RDP.PROGRAM_NAME AS RADIO_PROGRAM_NAME ")
 										.append(" FROM " + super.getTableName(ProgramSlot.class.getName())+ " P  " )
+										.append(" LEFT OUTER JOIN " + super.getTableName(RadioProgram.class.getName())+ " RDP  ON RDP.ID = P.RADIO_PROGRAM_ID ")
 										.append(" LEFT OUTER JOIN " + super.getTableName(User.class.getName())+ " UPR  ON UPR.ID = P.PRESENTER_ID ")
 										.append(" LEFT OUTER JOIN " + super.getTableName(User.class.getName())+ " UPO  ON UPO.ID = P.PRODUCER_ID ")
 										.append(" WHERE 1=1 ")
@@ -89,14 +92,20 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()){
+				Long presenterId = (Long) rs.getObject("PRESENTER_ID");
+				Long producerId = (Long) rs.getObject("PRODUCER_ID");
+				Long radioProgramId = (Long)rs.getObject("RADIO_PROGRAM_ID");
+				
 				ProgramSlot programSlot = super.createValueObject();
 				programSlot.setId(rs.getLong("SLOT_ID"));
 				programSlot.setStartDateTime(rs.getTimestamp("START_DATETIME"));
 				programSlot.setEndDateTime(rs.getTimestamp("END_DATETIME"));
-				programSlot.setPresenterId(rs.getLong("PRESENTER_ID"));
-				programSlot.setProducerId(rs.getLong("PRODUCER_ID"));
+				programSlot.setRadioProgramId(radioProgramId);
+				programSlot.setPresenterId(presenterId);
+				programSlot.setProducerId(producerId);
 				programSlot.getPresenter().setFirstName(rs.getString("PRESENTER_NAME"));
 				programSlot.getProducer().setFirstName(rs.getString("PRODUCER_NAME"));
+				programSlot.getRadioProgram().setProgramName(rs.getString("RADIO_PROGRAM_NAME"));
 				
 				programSlots.add(programSlot);
 			}
@@ -121,8 +130,8 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 	
 	
 	public void persist(List<ProgramSlot> programSlots)throws SQLException{
-		String persistSql = " INSERT INTO " +super.getTableName(ProgramSlot.class.getName())+ " (START_DATETIME, END_DATETIME , PRESENTER_ID , PRODUCER_ID , STATUS, CREATED_DATETIME, CREATED_BY_ID ) VALUES (?,?,?,?,?,?,?) ";
-		String updateSql = " UPDATE "+super.getTableName(ProgramSlot.class.getName())+ " SET START_DATETIME = ? , END_DATETIME = ? , PRESENTER_ID =? , PRODUCER_ID=?, STATUS=?, MODIFIED_DATETIME=?, MODIFIED_BY_ID=? WHERE ID =? ";
+		String persistSql = " INSERT INTO " +super.getTableName(ProgramSlot.class.getName())+ " (START_DATETIME, END_DATETIME , RADIO_PROGRAM_ID, PRESENTER_ID , PRODUCER_ID , STATUS, CREATED_DATETIME, CREATED_BY_ID ) VALUES (?,?,?,?,?,?,?) ";
+		String updateSql = " UPDATE "+super.getTableName(ProgramSlot.class.getName())+ " SET START_DATETIME = ? , END_DATETIME = ? , RADIO_PROGRAM_ID=?, PRESENTER_ID =? , PRODUCER_ID=?, STATUS=?, MODIFIED_DATETIME=?, MODIFIED_BY_ID=? WHERE ID =? ";
 		
 		try(Connection con = super.getConnection()){
 			PreparedStatement insertStatement = con.prepareStatement(persistSql);
@@ -132,26 +141,28 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 				if(!programSlot.isPkSet()){
 					if(!programSlot.isActive())
 						continue;
-					
-					insertStatement.setObject(1, programSlot.getStartDateTime());
-					insertStatement.setObject(2, programSlot.getEndDateTime());
-					insertStatement.setObject(3, programSlot.getPresenterId());
-					insertStatement.setObject(4, programSlot.getProducerId());
-					insertStatement.setString(5, programSlot.getStatus());
-					insertStatement.setObject(6, new Date());
-					insertStatement.setLong(7, 1);
+					int i=1;
+					insertStatement.setObject(i++, programSlot.getStartDateTime());
+					insertStatement.setObject(i++, programSlot.getEndDateTime());
+					insertStatement.setObject(i++, programSlot.getRadioProgramId());
+					insertStatement.setObject(i++, programSlot.getPresenterId());
+					insertStatement.setObject(i++, programSlot.getProducerId());
+					insertStatement.setString(i++, programSlot.getStatus());
+					insertStatement.setObject(i++, new Date());
+					insertStatement.setLong(i++, 1);
 					insertStatement.addBatch();
 				}else{
-					updateStatement.setObject(1, programSlot.getStartDateTime());
-					updateStatement.setObject(2, programSlot.getEndDateTime());
-					updateStatement.setObject(3, programSlot.getPresenterId());
-					updateStatement.setObject(4, programSlot.getProducerId());
-					updateStatement.setString(5, programSlot.getStatus());
-					updateStatement.setObject(6, new Date());
-					updateStatement.setLong(7, 1);
-					updateStatement.setLong(8, programSlot.getId());
+					int i=1;
+					updateStatement.setObject(i++, programSlot.getStartDateTime());
+					updateStatement.setObject(i++, programSlot.getEndDateTime());
+					updateStatement.setObject(i++, programSlot.getRadioProgramId());
+					updateStatement.setObject(i++, programSlot.getPresenterId());
+					updateStatement.setObject(i++, programSlot.getProducerId());
+					updateStatement.setString(i++, programSlot.getStatus());
+					updateStatement.setObject(i++, new Date());
+					updateStatement.setLong(i++, 1);
+					updateStatement.setLong(i++, programSlot.getId());
 					updateStatement.addBatch();
-					
 				}
 				
 				if(++count % 30 == 0) {

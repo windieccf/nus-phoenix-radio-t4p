@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sg.edu.nus.iss.t4p.phoenix.core.action.BaseController;
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantAttribute;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.delegate.security.AuthenticateDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
@@ -25,7 +26,7 @@ public class AuthenticateController extends BaseController {
 			
 			user = (new AuthenticateDelegate()).authenticateUser(user);
 			if(user!= null)
-				request.getSession().setAttribute("user", user);
+				request.getSession().setAttribute(ConstantAttribute.USER_SESSION, user);
 		
 			super.doRedirect(request, response, "/");
 		}catch(Exception e){
