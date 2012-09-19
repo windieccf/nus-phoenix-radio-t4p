@@ -42,8 +42,8 @@ public class RadioProgram extends BaseEntity{
 	public Long getId() {return id;}
 	public void setId(Long id) {this.id = id;}
 	
-	public String getProgramID() {return programName;}
-	public void setProgramID(String programName) {this.programName = programName;}
+	public String getProgramName() {return programName;}
+	public void setProgramName(String programName) {this.programName = programName;}
 	
 	public String getProgramDesc() {return programDesc;}
 	public void setProgramDesc(String programDesc) {this.programDesc = programDesc;}

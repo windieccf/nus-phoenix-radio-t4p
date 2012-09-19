@@ -12,6 +12,8 @@ public enum UrlPathEnum {
 	ACTION_INIT_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),
 	ACTION_SAVE_USER("/saveUser.do", "/controller/saveUser.do" ,"/userController/save.do"),
 	
+	ACTION_LIST_RADIOPROGRAM("/listRadioProgram.do", "/controller/listRadioProgram.do" ,"/radioprogramController/list.do"),
+	
 	PAGE_HOME("/", "/" ,"/");
 	
 	private String controlPath;

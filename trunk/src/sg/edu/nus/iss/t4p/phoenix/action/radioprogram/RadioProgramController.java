@@ -17,7 +17,7 @@ import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 @WebServlet(urlPatterns = "/radioprogramController/*")
 public class RadioProgramController extends BaseController {
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		
+
 		List<RadioProgram> radioprograms = RadioProgramDelegate.getInstance().retrieveProgramList();
 				
 		request.setAttribute("radioprograms", radioprograms);
