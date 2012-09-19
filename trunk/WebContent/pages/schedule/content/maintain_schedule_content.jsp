@@ -161,15 +161,18 @@
 								</td>
 								<td align="left" valign="top">
 									<span><i class="icon-headphones radio-program-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.radioProgram.programName}"/>&nbsp;</span>
-									<input type="hidden" name="weeklySchedule.programSlots.radioProgramId" value="${item.presenterId}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.radioProgramId" value="${item.radioProgramId}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.radioProgram.programName" value="${item.radioProgram.programName}"/>
 								</td>
 								<td align="left" valign="top">
 									<span><i class="icon-user presenter-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.presenter.firstName}"/>&nbsp;</span>
 									<input type="hidden" name="weeklySchedule.programSlots.presenterId" value="${item.presenterId}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.presenter.firstName" value="${item.presenter.firstName}"/>
 								</td>
 								<td align="left" valign="top">
 									<span ><i class="icon-user producer-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.producer.firstName}"/>&nbsp;</span>
-									<input type="hidden" name="weeklySchedule.programSlots.producerId" value="${item.presenterId}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.producerId" value="${item.producerId}"/>
+									<input type="hidden" name="weeklySchedule.programSlots.producer.firstName" value="${item.producer.firstName}"/>
 								</td>
 								<td align="left" valign="top">
 									<a class="btn btn-success status-button"><fmt:message key="active" /></a>
@@ -204,15 +207,18 @@
 			</td>
 			<td align="left" valign="top">
 				<span><i class="icon-headphones radio-program-button" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
-				<input type="hidden" name="weeklySchedule.programSlots.radioProgramId" value="${item.presenterId}"/>
+				<input type="hidden" name="weeklySchedule.programSlots.radioProgramId" />
+				<input type="hidden" name="weeklySchedule.programSlots.radioProgram.programName" />
 			</td>
 			<td align="left" valign="top">
 				<span><i class="icon-user presenter-button" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
-				<input type="hidden" name="weeklySchedule.programSlots.presenterId" value="${item.presenterId}"/>
+				<input type="hidden" name="weeklySchedule.programSlots.presenterId" />
+				<input type="hidden" name="weeklySchedule.programSlots.presenter.firstName" />
 			</td>
 			<td align="left" valign="top">
 				<span ><i class="icon-user producer-button" style="cursor: pointer;"></i>&nbsp;&nbsp;</span>
-				<input type="hidden" name="weeklySchedule.programSlots.producerId" value="${item.presenterId}"/>
+				<input type="hidden" name="weeklySchedule.programSlots.producerId" />
+				<input type="hidden" name="weeklySchedule.programSlots.producer.firstName" />
 			</td>
 			<td align="left" valign="top">
 				<a class="btn btn-success status-button"><fmt:message key="active" /></a>
