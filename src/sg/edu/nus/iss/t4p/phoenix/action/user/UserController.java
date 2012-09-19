@@ -41,10 +41,10 @@ public class UserController extends BaseController {
 		boolean saveStatus = (UserDelegate.getInstance().saveUser(user));
 		if (saveStatus) {
 			request.setAttribute("INF", "User saved successfully.");
-			request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);	
 			List<User> users = (UserDelegate.getInstance().retrieveUserList());
 			
 			request.setAttribute("users", users);
+			request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);	
 		} else {
 			request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);
 		}

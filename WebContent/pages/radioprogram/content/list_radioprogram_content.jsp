@@ -14,8 +14,8 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th><fmt:message key="program_name"/></th>
-							<th><fmt:message key="program_description"/></th>
+							<th><fmt:message key="label.radioprogram.name"/></th>
+							<th><fmt:message key="label.radioprogram.description"/></th>
 						</tr>
 					</thead>
 					<tbody>
