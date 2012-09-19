@@ -6,6 +6,7 @@ import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column.TYPE;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Table;
 import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
+import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 
 
@@ -16,6 +17,7 @@ public class ProgramSlot extends BaseEntity{
 	public ProgramSlot(){
 		this.presenter = new User();
 		this.producer = new User();
+		this.radioProgram = new RadioProgram();
 	}
 	
 	@Column(name="ID",columnType=TYPE.PRIMARY)
@@ -33,7 +35,11 @@ public class ProgramSlot extends BaseEntity{
 	public Date getEndDateTime() {return endDateTime;}
 	public void setEndDateTime(Date endDateTime) {this.endDateTime = endDateTime;}
 	
-	
+	@Column(name="RADIO_PROGRAM_ID",columnType=TYPE.ORDINARY)
+	private Long radioProgramId;
+	public Long getRadioProgramId() {return radioProgramId;}
+	public void setRadioProgramId(Long radioProgramId) {this.radioProgramId = radioProgramId;}
+
 	@Column(name="PRESENTER_ID",columnType=TYPE.ORDINARY)
 	private Long presenterId;
 	public Long getPresenterId() {return presenterId;}
@@ -58,6 +64,11 @@ public class ProgramSlot extends BaseEntity{
 		this.producer = producer;
 		this.setProducerId((this.producer == null) ? null : this.producer.getId());
 	}
+	
+	private RadioProgram radioProgram;
+	public RadioProgram getRadioProgram() {return radioProgram;}
+	public void setRadioProgram(RadioProgram radioProgram) {this.radioProgram = radioProgram;}
+	
 	
 	
 	

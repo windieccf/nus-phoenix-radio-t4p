@@ -73,7 +73,6 @@ public class UserDaoTest {
 			try {
 				DaoFactory.getInstance().getUserDao().persist(user);
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			System.err.println(user.getId());

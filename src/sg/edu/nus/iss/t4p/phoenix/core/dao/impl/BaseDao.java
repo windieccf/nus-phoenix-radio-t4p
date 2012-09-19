@@ -24,6 +24,12 @@ import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
+/**
+* Implementation for BaseDaoIntf
+* @author Robin Foe A0092657U
+* @version 1.0
+* @see sg.edu.nus.iss.t4p.phoenix.core.dao.BaseDaoIntf
+*/
 public abstract class BaseDao<T extends BaseEntity> {
 
 	private Class<T> klass;
@@ -37,7 +43,9 @@ public abstract class BaseDao<T extends BaseEntity> {
 		klass = (Class<T>) paramType.getActualTypeArguments()[0];
 		
 		// initialize the table name;
-		if(!TABLE_NAME.containsKey(klass.getName())){
+		this.getTableName(klass.getName());
+		
+		/*if(!TABLE_NAME.containsKey(klass.getName())){
 			if(klass.getAnnotation(Table.class) == null)
 				throw new IllegalArgumentException("The Entity does not contain @Table annotation");
 			
@@ -49,7 +57,7 @@ public abstract class BaseDao<T extends BaseEntity> {
 			
 			tableName = (schema == null || "".equals( schema.trim() )) ? tableName : schema + "." + tableName;
 			TABLE_NAME.put(klass.getName(), tableName);
-		}
+		}*/
 	}
 	
 	public T createValueObject(){
@@ -285,7 +293,6 @@ public abstract class BaseDao<T extends BaseEntity> {
 		try {
 			conn = DriverManager.getConnection(DBConstants.dbUrl, DBConstants.dbUserName, DBConstants.dbPassword);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return conn;
@@ -324,7 +331,30 @@ public abstract class BaseDao<T extends BaseEntity> {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected String getTableName(String klassName){
+		
+		if(!TABLE_NAME.containsKey(klassName)){
+			try{
+				Class<? extends BaseEntity> klazz = (Class<? extends BaseEntity>) Class.forName(klassName);
+				
+				if(klazz.getAnnotation(Table.class) == null)
+					throw new IllegalArgumentException("The Entity does not contain @Table annotation");
+				
+				String schema = klazz.getAnnotation(Table.class).schema();
+				String tableName = klazz.getAnnotation(Table.class).name();
+				
+				if( tableName == null || "".equals( tableName.trim() ))
+					throw new IllegalArgumentException("The @Table annotation must contain Name");
+				
+				tableName = (schema == null || "".equals( schema.trim() )) ? tableName : schema + "." + tableName;
+				TABLE_NAME.put(klassName, tableName);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
 		return TABLE_NAME.get(klassName);
 	}
 

@@ -13,9 +13,19 @@ import sg.edu.nus.iss.t4p.phoenix.core.annotation.PrePersist;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.PreUpdate;
 import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 
+/**
+* Abstract class for entity of key design
+* @author Robin Foe A0092657U
+* @version 1.0
+*/
 @SuppressWarnings("serial")
 public abstract class BaseEntity implements Cloneable, Serializable{
 	
+	/**
+	 * Check if the given object pk is set with column type primary
+	 * @return boolean
+	 * @see  sg.edu.nus.iss.t4p.phoenix.core.annotation.Column
+	 */
 	public boolean isPkSet(){
 		List<Field> fields = this.getFieldsByType(Column.TYPE.PRIMARY);
 		for(Field field : fields){
@@ -33,6 +43,11 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 		return true;
 	}
 	
+	/**
+	 * retrieve list of Field in the class by the given column type
+	 * @return List<Field>
+	 * @see  java.lang.reflect.Field
+	 */
 	public List<Field> getFieldsByType(Column.TYPE columnType){
 		List<Field> fields = new ArrayList<Field>();
 
@@ -48,6 +63,11 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 		return fields;
 	}
 	
+	/**
+	 * retrieve list of all available column Field in the class
+	 * @return List<Field>
+	 * @see  java.lang.reflect.Field
+	 */
 	public List<Field> getColumnField(){
 		List<Field> fields = new ArrayList<Field>();
 		Class<?> klazz = this.getClass(); 
@@ -69,6 +89,11 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 		return fields;
 	}
 	
+	/**
+	 * retrieve list of all available Field in the class
+	 * @return List<Field>
+	 * @see  java.lang.reflect.Field
+	 */
 	public List<Field> getAllField(){
 		List<Field> fields = new ArrayList<Field>();
 		Class<?> klazz = this.getClass(); 
@@ -131,5 +156,10 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 	private Long modifiedById;
 	public Long getModifiedById() {return modifiedById;}
 	public void setModifiedById(Long modifiedById) {this.modifiedById = modifiedById;}
+	
+	private String selected = ConstantStatus.NO;
+	public String getSelected() {return selected;}
+	public void setSelected(String selected) {this.selected = selected;}
+	
 	
 }
