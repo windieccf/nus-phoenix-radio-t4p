@@ -82,6 +82,10 @@
 		$('#save-button').click(function(){ 
 			$('#scheduler-form').submit(); 
 		});
+		$('#populate-schedule-button').click(function(){
+			$('#scheduler-form').attr('action',  '${pageContext.request.contextPath}/controller/pickScheduledProgram.do'  );
+			$('#scheduler-form').submit(); 
+		});
 		
 		$('#add-new-button').click(function(){
 			var templateInput = $('#template-input').clone();
@@ -123,7 +127,7 @@
 			</div>
 			<div class="span7 align-right">
 				<a id="add-new-button" class="btn btn-info"><fmt:message key="add_new_slot" /></a>
-				<a id="add-new-button" class="btn btn-info"><fmt:message key="populate_slot" /></a>
+				<a id="populate-schedule-button" class="btn btn-info"><fmt:message key="populate_slot" /></a>
 				
 				<a id="save-button" class="btn btn-primary"><fmt:message key="save" /></a>
 				|

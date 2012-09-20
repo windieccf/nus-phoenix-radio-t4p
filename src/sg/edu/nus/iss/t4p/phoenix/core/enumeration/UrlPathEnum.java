@@ -17,13 +17,19 @@ public enum UrlPathEnum {
 	ACTION_PICK_RADIO_SCHEDULE("/pickRadioProgram.do", "/controller/pickRadioProgram.do" ,"/scheduleController/pickRadioProgram.do"),
 	ACTION_PICK_PRESENTER_SCHEDULE("/pickPresenter.do", "/controller/pickPresenter.do" ,"/scheduleController/pickPresenter.do"),
 	ACTION_PICK_PRODUCER_SCHEDULE("/pickProducer.do", "/controller/pickProducer.do" ,"/scheduleController/pickProducer.do"),
+	ACTION_PICK_SCHEDULED_PROGRAM("/pickScheduledProgram.do", "/controller/pickScheduledProgram.do" ,"/scheduleController/pickScheduledProgram.do"),
 	
 	ACTION_CALLBACK_RADIO_SCHEDULE("/callBackRadioProgram.do", "/controller/callBackRadioProgram.do" ,"/scheduleController/callBackRadioProgram.do"),
 	ACTION_CALLBACK_PRESENTER_SCHEDULE("/callBackPresenter.do", "/controller/callBackPresenter.do" ,"/scheduleController/callBackPresenter.do"),
 	ACTION_CALLBACK_PRODUCER_SCHEDULE("/callBackProducer.do", "/controller/callBackProducer.do" ,"/scheduleController/callBackProducer.do"),
+	ACTION_CALLBACK_SCHEDULED_PROGRAM("/callBackScheduledProgram.do", "/controller/callBackScheduledProgram.do" ,"/scheduleController/callBackScheduledProgram.do"),
 	
 	ACTION_PICK_RADIO_LIST("/pickRadioList.do", "/controller/pickRadioList.do" ,"/radioprogramController/list.do"),
 	ACTION_SELECT_RADIO_LIST("/selectRadioProgram.do", "/controller/selectRadioProgram.do" ,"/radioprogramController/selectRadioProgram.do"),
+	
+	ACTION_PICK_SCHEDULED_LIST("/pickScheduledProgramList.do", "/controller/pickScheduledProgramList.do" ,"/scheduledProgramController/list.do"),
+	ACTION_SELECT_SCHEDULED_LIST("/selectScheduledProgram.do", "/controller/selectScheduledProgram.do" ,"/scheduledProgramController/selectScheduledProgram.do"),
+	
 	
 	ACTION_LIST_USER("/listUser.do", "/controller/listUser.do" ,"/userController/list.do"),
 	ACTION_INIT_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -157,10 +158,33 @@ public class ScheduleController extends BaseController {
 	}
 	
 	protected void doPickScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		
+		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
+		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
+		request.setAttribute(ConstantAttribute.CALL_BACK_URL, UrlPathEnum.ACTION_CALLBACK_SCHEDULED_PROGRAM.getFrontControlPath());
+		request.getRequestDispatcher(UrlPathEnum.ACTION_PICK_SCHEDULED_LIST.getFrontControlPath()).forward(request, response);
+
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void doCallBackScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+
+		List<ProgramSlot> selectedSlots = (List<ProgramSlot>)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
+		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
+		request.getSession().removeAttribute(ConstantAttribute.FLASH_SESSION);
+		
+		for(ProgramSlot selectedSlot : selectedSlots){
+			Calendar startDate = T4DateUtil.alignDateTimeByDayOfWeek(weeklySchedule.getStartDate() , selectedSlot.getStartDateTime());
+			Calendar endDate = T4DateUtil.alignDateTimeByDayOfWeek(weeklySchedule.getStartDate() , selectedSlot.getEndDateTime());
+		
+			selectedSlot.setStartDateTime(startDate.getTime());
+			selectedSlot.setEndDateTime(endDate.getTime());
+			selectedSlot.toggleSelected();
+			
+			weeklySchedule.getProgramSlots().add(selectedSlot);
+		}
+
+		request.setAttribute("weeklySchedule", weeklySchedule);
+		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);
 		
 	}
 	
@@ -174,7 +198,6 @@ public class ScheduleController extends BaseController {
 	
 	
 	protected void doPickProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		
 	}
 	
 	protected void doCallBackProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{

@@ -253,7 +253,7 @@ public abstract class BaseController extends HttpServlet {
 			 else if (dataType.equals(BigDecimal.class))
 				 return new BigDecimal(value);
 			 else if (dataType.equals(Date.class))
-				 return T4DateUtil.DATE_TIME_01.parse(value);
+				 return T4DateUtil.saveParseDate(value);
 			 else
 				 return value;
 		 }
