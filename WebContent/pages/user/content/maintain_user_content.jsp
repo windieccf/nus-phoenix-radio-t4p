@@ -79,7 +79,7 @@ jQuery(document).ready(function($){
 		  <div class="control-group">
                 <label class="control-label">Address</label> 
                 <div class="controls">
-                	<input class="required" type="text" name="user.address" value="${user.address}" />
+                	<textarea class="required" rows="3" name="user.address">${user.address}</textarea>
                 </div>
 		 </div>
 		 
