@@ -50,7 +50,7 @@ public class UserService {
 	}
 	
 	public boolean saveUser(User user) throws BusinessLogicException {
-		if(user.isPkSet() && DaoFactory.getInstance().getUserDao().isUserExisting(user))
+		if(!user.isPkSet() && DaoFactory.getInstance().getUserDao().isUserExisting(user))
 			throw new BusinessLogicException("Duplicate user name, please amend.");
 		
 		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user);	
