@@ -1,3 +1,20 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY SOURCE CODE OF
+ * Institute of Systems Science, National University of Singapore
+ *
+ * Copyright 2012 Team 4(Part-Time), ISS, NUS, Singapore. All rights reserved.
+ * Use of this source code is subjected to the terms of the applicable license
+ * agreement.
+ *
+ * -----------------------------------------------------------------
+ * REVISION HISTORY
+ * -----------------------------------------------------------------
+ * DATE             AUTHOR          REVISION		DESCRIPTION
+ * 20 Sep 2012    	Team 4		    0.1				Initial creating
+ * 													
+ * 													
+ * 
+ */
 package sg.edu.nus.iss.t4p.phoenix.action.presenterproducer;
 
 import java.io.IOException;
@@ -14,9 +31,22 @@ import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantAttribute;
 import sg.edu.nus.iss.t4p.phoenix.delegate.user.*;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
+/**
+ * 
+ * Servlet Implementation class for PresenterProducer Controller
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/presenterproducerController/*")
 public class PresenterProducerController {
+	
+	/**
+	 * Method for listing PresenterProducer
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 
 		List<User> presenterproducer = UserDelegate.getInstance().retrievePresenterProducerList(true);
