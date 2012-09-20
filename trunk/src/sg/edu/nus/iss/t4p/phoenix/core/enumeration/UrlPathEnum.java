@@ -47,10 +47,15 @@ public enum UrlPathEnum {
 	ACTION_PICK_SCHEDULED_LIST("/pickScheduledProgramList.do", "/controller/pickScheduledProgramList.do" ,"/scheduledProgramController/list.do"),
 	ACTION_SELECT_SCHEDULED_LIST("/selectScheduledProgram.do", "/controller/selectScheduledProgram.do" ,"/scheduledProgramController/selectScheduledProgram.do"),
 	
-	
 	ACTION_LIST_USER("/listUser.do", "/controller/listUser.do" ,"/userController/list.do"),
 	ACTION_INIT_USER("/initUser.do", "/controller/initUser.do" ,"/userController/init.do"),
 	ACTION_SAVE_USER("/saveUser.do", "/controller/saveUser.do" ,"/userController/save.do"),
+	
+	ACTION_PICK_PRESENTER_LIST("/pickPresenterList.do", "/controller/pickPresenterList.do" ,"/PresenterProducerController/PresenterList.do"),
+	ACTION_SELECT_PRESENTER_LIST("/selectPresenter.do", "/controller/selectPresenter.do" ,"/PresenterProducerController/selectPresenter.do"),
+	
+	ACTION_PICK_PRODUCER_LIST("/pickProducerList.do", "/controller/pickProducerList.do" ,"/PresenterProducerController/ProducerList.do"),
+	ACTION_SELECT_PRODUCER_LIST("/selectProducer.do", "/controller/selectProducer.do" ,"/PresenterProducerController/selectProducer.do"),
 	
 	ACTION_LIST_RADIOPROGRAM("/listRadioProgram.do", "/controller/listRadioProgram.do" ,"/radioprogramController/list.do"),
 	
