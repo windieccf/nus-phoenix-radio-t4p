@@ -64,20 +64,6 @@ public abstract class BaseDao<T extends BaseEntity> {
 		
 		// initialize the table name;
 		this.getTableName(klass.getName());
-		
-		/*if(!TABLE_NAME.containsKey(klass.getName())){
-			if(klass.getAnnotation(Table.class) == null)
-				throw new IllegalArgumentException("The Entity does not contain @Table annotation");
-			
-			String schema = klass.getAnnotation(Table.class).schema();
-			String tableName = klass.getAnnotation(Table.class).name();
-			
-			if( tableName == null || "".equals( tableName.trim() ))
-				throw new IllegalArgumentException("The @Table annotation must contain Name");
-			
-			tableName = (schema == null || "".equals( schema.trim() )) ? tableName : schema + "." + tableName;
-			TABLE_NAME.put(klass.getName(), tableName);
-		}*/
 	}
 	
 	/**
@@ -350,6 +336,72 @@ public abstract class BaseDao<T extends BaseEntity> {
 	
 	public List<T> searchMatching(T valueObject)throws SQLException{
 		return null;
+	}
+	
+	public  List<T> paginate(Long pageNo, Long rowPerPage, T valueObject) throws SQLException{
+		
+		List<T> list = new ArrayList<T>();
+		StringBuffer mySql = new StringBuffer("SELECT * FROM ")
+							.append( TABLE_NAME.get(this.klass.getName()) )
+							.append(" WHERE 1=1  ");
+		
+		long startIdx = pageNo * rowPerPage;
+		
+		List<String> columns = new ArrayList<String>();
+		List<Object> params = new ArrayList<Object>();
+		
+		
+		if(valueObject!=null){
+			List<Field> filterFields = valueObject.getColumnField();
+			for(Field field : filterFields){
+				Column col = field.getAnnotation(Column.class);
+				String columnName = col.name();
+				Object val = null;
+				try {
+					field.setAccessible(true);
+					val = field.get(valueObject);
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					e.printStackTrace();
+				}
+				if(val!=null){
+					columns.add(columnName + " = ? ");
+					params.add(val);
+				}
+				
+			}
+			
+		}
+		
+		if(!columns.isEmpty())
+			mySql.append(" AND " + T4StringUtil.join(columns , " AND ") );
+		
+		mySql.append(" limit "+startIdx+" , " + rowPerPage);
+//		System.err.println(" SQL " + mySql.toString() );
+		
+		try (Connection con = this.getConnection(); ) {
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
+			int i = 1;
+			for(Object obj : params){
+				stmt.setObject(i++, obj);
+			}
+			
+			
+			ResultSet rs = stmt.executeQuery();
+			T valObj = this.createValueObject();
+			List<Field> fields= valObj.getColumnField();
+			
+			while(rs.next()){
+				valObj = this.createValueObject();
+				this.assignValue(valObj, fields, rs);
+				list.add(valObj);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+		
 	}
 	
 	/**

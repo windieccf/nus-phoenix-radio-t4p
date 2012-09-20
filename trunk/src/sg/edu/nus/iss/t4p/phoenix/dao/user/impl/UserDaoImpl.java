@@ -91,7 +91,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	public boolean isUserExisting(User user) {
 		try( Connection con = super.getConnection() ){
 			StringBuffer mySql = new StringBuffer("SELECT COUNT(*) AS COUNTER FROM ")
-			.append( super.getTableName(User.class.getName()) + " WHERE UPPER(USERNAME) = ? and STATUS = " + ConstantStatus.ACTIVE);
+			.append( super.getTableName(User.class.getName()) + " WHERE UPPER(USERNAME) = ? and STATUS = '" + ConstantStatus.ACTIVE +"' ");
 
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			stmt.setString(1, user.getUsername().toUpperCase());

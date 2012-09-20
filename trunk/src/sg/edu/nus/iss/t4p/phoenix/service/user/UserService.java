@@ -25,6 +25,17 @@ public class UserService {
 		}
 		return users;
 	}
+	
+	public List<User> paginateUser(Long pageNo , Long rowPerPage, User user)  {
+		List<User> users = null;
+		try {
+			users = DaoFactory.getInstance().getUserDao().paginate(pageNo, rowPerPage,  user);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return users;
+	}
+	
 	public User retrieveUser(String username) {
 		User user = DaoFactory.getInstance().getUserDao().getByUsername(username);
 		try {
@@ -39,10 +50,9 @@ public class UserService {
 	}
 	
 	public boolean saveUser(User user) throws BusinessLogicException {
-		boolean isUserExisting = DaoFactory.getInstance().getUserDao().isUserExisting(user);
-		if (user.getId() == null && isUserExisting) {
-				throw new BusinessLogicException("Duplicate user name, please amend.");
-		}
+		if(user.isPkSet() && DaoFactory.getInstance().getUserDao().isUserExisting(user))
+			throw new BusinessLogicException("Duplicate user name, please amend.");
+		
 		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user);	
 		return saveStatus;
 	}
