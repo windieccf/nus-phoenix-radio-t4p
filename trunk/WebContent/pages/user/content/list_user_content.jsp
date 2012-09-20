@@ -11,6 +11,7 @@
 		
 		<div class="row-fluid" >
 			<div class="span12">
+				<div><a href="<c:url value='/controller/initUser.do'/>">Create User</a></div>
 				<table class="table">
 					<thead>
 						<tr>
