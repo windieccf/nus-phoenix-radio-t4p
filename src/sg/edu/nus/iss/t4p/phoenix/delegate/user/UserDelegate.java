@@ -23,5 +23,9 @@ public class UserDelegate {
 	public boolean saveUser(User user) {
 		return (UserService.getInstance().saveUser(user));
 	}
+	
+	public List<User> retrievePresenterProducerList(boolean IsPresenter){
+		return UserService.getInstance().retrievePresenterProducerList(IsPresenter);
+	}
 
 }
