@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.UserDao;
@@ -76,7 +77,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	@Override
 	public boolean saveUser(User user) {
 		try {
-			super.merge(user);
+			super.persist(user);
 		} catch (SQLException | NotFoundException e) {
 			e.printStackTrace();
 			return false;
@@ -88,7 +89,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	public boolean isUserExisting(User user) {
 		try( Connection con = super.getConnection() ){
 			StringBuffer mySql = new StringBuffer("SELECT COUNT(*) AS COUNTER FROM ")
-			.append( super.getTableName(User.class.getName()) + " WHERE UPPER(USERNAME) = ? ");
+			.append( super.getTableName(User.class.getName()) + " WHERE UPPER(USERNAME) = ? and STATUS = " + ConstantStatus.ACTIVE);
 
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			stmt.setString(1, user.getUsername().toUpperCase());
