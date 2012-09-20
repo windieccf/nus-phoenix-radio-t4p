@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.t4p.phoenix.utility;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +29,17 @@ public class T4DateUtil {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
 		return cal;
+	}
+	
+	public static Calendar alignDateTimeByDayOfWeek(Date date01, Date date02){
+		Calendar cal01 = T4DateUtil.getCalendar(date01);
+		Calendar cal02 = T4DateUtil.getCalendar(date02);
+		
+		cal01.set(Calendar.DAY_OF_WEEK, cal02.get(Calendar.DAY_OF_WEEK));
+		cal01.set(Calendar.HOUR_OF_DAY, cal02.get(Calendar.HOUR_OF_DAY));
+		cal01.set(Calendar.MINUTE, cal02.get(Calendar.MINUTE));
+		cal01.set(Calendar.SECOND, cal02.get(Calendar.SECOND));
+		return cal01;
 	}
 	
 	public static Calendar getOneWeekLater(Date date){
@@ -77,6 +89,14 @@ public class T4DateUtil {
 			return dateFrom.before(compareDateTo);
 		
 		return false;
+	}
+	
+	public static Date saveParseDate(String text) throws ParseException{
+		try{
+			return DATE_TIME_01.parse(text);
+		}catch(ParseException e){
+			return DATE_02.parse(text);	
+		}
 	}
 
 }

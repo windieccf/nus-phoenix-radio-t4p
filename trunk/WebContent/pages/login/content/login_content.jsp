@@ -5,7 +5,7 @@
 	jQuery(document).ready(function($){
 		
 		$('.required').blur(function(){
-			console.log( $.trim( $(this).val() ).length);	
+			//console.log( $.trim( $(this).val() ).length);	
 			if( $.trim( $(this).val() ).length === 0)
 				$(this).addClass('inputError');
 			else
