@@ -2,6 +2,7 @@ package sg.edu.nus.iss.t4p.phoenix.delegate.user;
 
 import java.util.List;
 
+import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 import sg.edu.nus.iss.t4p.phoenix.service.user.UserService;
 
@@ -20,7 +21,7 @@ public class UserDelegate {
 	public User retrieveUser(String username) {
 		return (UserService.getInstance().retrieveUser(username));
 	}
-	public boolean saveUser(User user) {
+	public boolean saveUser(User user) throws BusinessLogicException {
 		return (UserService.getInstance().saveUser(user));
 	}
 	

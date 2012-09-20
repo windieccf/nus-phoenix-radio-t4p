@@ -51,4 +51,8 @@ public class UserService {
 		
 		return presenterproducers;
 	}
+    
+	public boolean isUserExisting(User user) {
+		return DaoFactory.getInstance().getUserDao().isUserExisting(user);	
+	}
 }

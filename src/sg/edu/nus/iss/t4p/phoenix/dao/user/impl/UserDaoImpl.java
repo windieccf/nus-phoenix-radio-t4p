@@ -84,6 +84,24 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 		return true;
 	}
 	
+	@Override
+	public boolean isUserExisting(User user) {
+		try( Connection con = super.getConnection() ){
+			StringBuffer mySql = new StringBuffer("SELECT COUNT(*) AS COUNTER FROM ")
+			.append( super.getTableName(User.class.getName()) + " WHERE UPPER(USERNAME) = ? ");
+
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
+			stmt.setString(1, user.getUsername().toUpperCase());
+			
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next())
+				if (rs.getInt("COUNTER") > 0) return true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	/*public static void main(String... args){
 		UserDaoImpl impl = new UserDaoImpl();
 		User user = impl.getByUsername("robin");

@@ -8,11 +8,24 @@
 		<jsp:include page="/pages/include/messages.jsp" />
 		
 		<div class="control-group">
-                <label class="control-label required-field">User Name</label> 
-                <div class="controls">
-                    <label>${user.username}</label>
-                    <input type="hidden" name="user.id" value="${user.getId().longValue()}"/>
-                </div>
+				<c:choose>
+				    <c:when test="${user.id == null}">
+				        <label class="control-label">User Name</label> 
+		                <div class="controls">
+		                	<input class="required" type="text" name="user.username" value="${user.username}" />
+		                </div>
+				    </c:when>
+				    <c:otherwise>
+				        <label class="control-label required-field">User Name</label> 
+		                <div class="controls">
+		                    <label>${user.username}</label>
+		                    <input type="hidden" name="user.id" value="${user.getId().longValue()}"/>
+		                    <input type="hidden" name="user.username" value="${user.username}"/>
+		                </div>
+				    </c:otherwise>
+				</c:choose>
+				
+               
 		 </div>
 		 
 		 <div class="control-group">

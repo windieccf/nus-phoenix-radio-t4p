@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import sg.edu.nus.iss.t4p.phoenix.core.action.BaseController;
+import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.delegate.role.RoleDelegate;
 import sg.edu.nus.iss.t4p.phoenix.delegate.user.UserDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
+import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/userController/*")
@@ -28,17 +30,28 @@ public class UserController extends BaseController {
 	}
 	
 	protected void doInit(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-
-		User user = (UserDelegate.getInstance().retrieveUser(request.getParameter("username")));
-		List<Role> roles = (RoleDelegate.getInstance().getRolesByUserId(user.getId()));
-		request.setAttribute("users", user);
-		request.setAttribute("roles", roles);
+		String userName = request.getParameter("username");
+		User user = new User();
+		if (userName != null) {
+			user = (UserDelegate.getInstance().retrieveUser(userName));
+		} 
+		request.setAttribute("user", user);
 		request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);		
 	}
 	
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User user = super.retrieveParameter(request,User.class);
-		boolean saveStatus = (UserDelegate.getInstance().saveUser(user));
+		boolean saveStatus = false;
+			try {
+				if(T4StringUtil.isEmpty(user.getUsername()))
+					throw new BusinessLogicException("Please fill in Username");
+				saveStatus = (UserDelegate.getInstance().saveUser(user));
+			} catch (BusinessLogicException e) {
+				request.setAttribute("ERR", e.getMessage());
+				request.setAttribute("user", user);
+				request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);	
+				e.printStackTrace();
+			}
 		if (saveStatus) {
 			request.setAttribute("INF", "User saved successfully.");
 			List<User> users = (UserDelegate.getInstance().retrieveUserList());
