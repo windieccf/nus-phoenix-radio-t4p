@@ -40,4 +40,15 @@ public class UserService {
 		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user);	
 		return saveStatus;
 	}
+	
+    public List<User> retrievePresenterProducerList(boolean IsPresenter){
+		List<User> presenterproducers = null;
+		try{
+			presenterproducers = DaoFactory.getInstance().getUserDao().retrievePresenterProducerList(IsPresenter);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		return presenterproducers;
+	}
 }
