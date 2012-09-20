@@ -1,3 +1,20 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY SOURCE CODE OF
+ * Institute of Systems Science, National University of Singapore
+ *
+ * Copyright 2012 Team 4(Part-Time), ISS, NUS, Singapore. All rights reserved.
+ * Use of this source code is subjected to the terms of the applicable license
+ * agreement.
+ *
+ * -----------------------------------------------------------------
+ * REVISION HISTORY
+ * -----------------------------------------------------------------
+ * DATE             AUTHOR          REVISION		DESCRIPTION
+ * 15 Sep 2012    	Team 4		    0.1				Initial creating
+ * 													
+ * 													
+ * 
+ */
 package sg.edu.nus.iss.t4p.phoenix.core.dao.impl;
 
 import java.lang.reflect.Field;
@@ -35,6 +52,9 @@ public abstract class BaseDao<T extends BaseEntity> {
 	private Class<T> klass;
 	private static Map<String,String> TABLE_NAME = new HashMap<String,String>();
 	
+    /**
+     * Base DAO constructor. 
+     */
 	@SuppressWarnings("unchecked")
 	public BaseDao(){
 		// retrieving the generic type of the class
@@ -60,6 +80,10 @@ public abstract class BaseDao<T extends BaseEntity> {
 		}*/
 	}
 	
+	/**
+	 * Create new instance for the object
+	 * @return new stance or null
+	 */
 	public T createValueObject(){
 		try {
 			return klass.newInstance();
@@ -70,6 +94,13 @@ public abstract class BaseDao<T extends BaseEntity> {
 		return null;
 	}
 	
+	/**
+	 * Get object through user ID
+	 * @param id
+	 * @return object
+	 * @throws NotFoundException
+	 * @throws SQLException
+	 */
 	public T getObject(String id) throws NotFoundException, SQLException{
 		T valueObj = this.createValueObject();
 		List<Field> fields = valueObj.getFieldsByType(Column.TYPE.PRIMARY);
@@ -100,6 +131,12 @@ public abstract class BaseDao<T extends BaseEntity> {
 		return valueObj;
 	}
 	
+	/**
+	 * Load value object
+	 * @param valueObject
+	 * @throws NotFoundException
+	 * @throws SQLException
+	 */
 	public void load(T valueObject)	throws NotFoundException, SQLException{
 		List<Field> fields = valueObject.getFieldsByType(Column.TYPE.PRIMARY);
 		try (Connection con = this.getConnection(); ) {
@@ -131,6 +168,11 @@ public abstract class BaseDao<T extends BaseEntity> {
 		
 	}
 	
+	/**
+	 * List all items according to object
+	 * @return list of objects
+	 * @throws SQLException
+	 */
 	public List<T> loadAll() throws SQLException{
 		List<T> list = new ArrayList<T>();
 		StringBuffer mySql = new StringBuffer("SELECT * FROM ")
@@ -154,6 +196,13 @@ public abstract class BaseDao<T extends BaseEntity> {
 		return list;
 	}
 	
+	/**
+	 * If object exist @see BaseDao#merge(BaseEntity)
+	 * If object not existing, a new object will be created
+	 * @param valueObject
+	 * @throws NotFoundException
+	 * @throws SQLException
+	 */
 	public void persist(T valueObject)throws NotFoundException, SQLException{
 		if(valueObject.isPkSet())
 			this.merge(valueObject);
@@ -200,6 +249,12 @@ public abstract class BaseDao<T extends BaseEntity> {
 		}
 	}
 	
+	/**
+	 * Merge the existing object based on object ID
+	 * @param valueObject
+	 * @throws NotFoundException
+	 * @throws SQLException
+	 */
 	public void merge(T valueObject)throws NotFoundException, SQLException{
 		
 		StringBuffer mySql = new StringBuffer(" UPDATE " + this.getTableName(klass.getName()) + " SET ");
@@ -245,11 +300,21 @@ public abstract class BaseDao<T extends BaseEntity> {
 		}
 	}
 	
+	/**
+	 * Soft delete the object
+	 * @param valueObject
+	 * @throws NotFoundException
+	 * @throws SQLException
+	 */
 	public void remove(T valueObject)throws NotFoundException, SQLException{
 		valueObject.setStatus(ConstantStatus.DELETE);
 		this.merge(valueObject);
 	}
 	
+	/**
+	 * Remove all the object under the same class
+	 * @throws SQLException
+	 */
 	public void removeAll() throws SQLException{
 		StringBuffer mySql = new StringBuffer(" UPDATE " + this.getTableName(klass.getName()) + " SET STATUS = '"+ConstantStatus.DELETE+"' ");
 		
@@ -262,6 +327,11 @@ public abstract class BaseDao<T extends BaseEntity> {
 		
 	}
 	
+	/**
+	 * Get total number of objects under the same class
+	 * @return
+	 * @throws SQLException
+	 */
 	public int countAll() throws SQLException{
 		int result = 0;
 		StringBuffer mySql = new StringBuffer(" SELECT COUNT(1) AS COUNTER FROM " + this.getTableName(klass.getName()));
@@ -282,6 +352,10 @@ public abstract class BaseDao<T extends BaseEntity> {
 		return null;
 	}
 	
+	/**
+	 * Get JDBC connection
+	 * @return
+	 */
 	protected Connection getConnection() {
 		Connection conn = null;
 		try {
