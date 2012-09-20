@@ -35,6 +35,20 @@ jQuery(document).ready(function($){
 		 </div>
 		 
 		 <div class="control-group">
+                <label class="control-label">Password</label> 
+                <div class="controls">
+                	<input class="required" type="password" name="user.password" value="${user.password}" />
+                </div>
+		 </div>
+		 
+		  <div class="control-group">
+                <label class="control-label">Email</label> 
+                <div class="controls">
+                	<input class="required" type="text" name="user.email" value="${user.email}" />
+                </div>
+		 </div>
+		 
+		 <div class="control-group">
                 <label class="control-label">First Name</label> 
                 <div class="controls">
                 	<input class="required" type="text" name="user.firstName" value="${user.firstName}" />
@@ -62,20 +76,6 @@ jQuery(document).ready(function($){
                 </div>
 		 </div>
 
-		  <div class="control-group">
-                <label class="control-label">Password</label> 
-                <div class="controls">
-                	<input class="required" type="password" name="user.password" value="${user.password}" />
-                </div>
-		 </div>
-		 
-		  <div class="control-group">
-                <label class="control-label">Email</label> 
-                <div class="controls">
-                	<input class="required" type="text" name="user.email" value="${user.email}" />
-                </div>
-		 </div>
-		 
 		  <div class="control-group">
                 <label class="control-label">Address</label> 
                 <div class="controls">
