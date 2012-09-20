@@ -90,5 +90,36 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 		System.err.println(user.getUsername());
 		user.toString();
 	}*/
+	
+	@Override
+	public ArrayList<User> retrievePresenterProducerList(boolean IsPresenter){
+		ArrayList<User> users = new ArrayList<>();
+		try( Connection con = super.getConnection() ){
+			String mySql = "select U.* from USER_ROLE UR INNER JOIN USER U ON UR.USER_ID = U.ID WHERE ROLE = ?";
+
+			PreparedStatement stmt = con.prepareStatement(mySql.toString());
+			
+			// Need to modify
+			if(IsPresenter == true){
+	           stmt.setString(1, "Presenter");
+			}
+			else{
+				stmt.setString(1, "Producer");
+			}
+	        
+			ResultSet rs = stmt.executeQuery();
+			
+			while(rs.next()){
+				User user = super.createValueObject();
+				super.assignValue(user, user.getColumnField(), rs);
+				users.add(user);
+			}
+			return users;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 }
