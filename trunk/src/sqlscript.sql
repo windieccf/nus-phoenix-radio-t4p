@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2012 at 09:01 PM
+-- Generation Time: Sep 20, 2012 at 09:07 PM
 -- Server version: 5.5.25a
 -- PHP Version: 5.4.4
 
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `PROGRAM_SLOT`
 --
 
+DROP TABLE IF EXISTS `PROGRAM_SLOT`;
 CREATE TABLE IF NOT EXISTS `PROGRAM_SLOT` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `RADIO_PROGRAM_ID` bigint(20) DEFAULT NULL,
@@ -49,6 +50,7 @@ INSERT INTO `PROGRAM_SLOT` (`ID`, `RADIO_PROGRAM_ID`, `PRESENTER_ID`, `PRODUCER_
 -- Table structure for table `RADIO_PROGRAM`
 --
 
+DROP TABLE IF EXISTS `RADIO_PROGRAM`;
 CREATE TABLE IF NOT EXISTS `RADIO_PROGRAM` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `PROGRAM_NAME` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -84,6 +86,7 @@ INSERT INTO `RADIO_PROGRAM` (`ID`, `PROGRAM_NAME`, `PROGRAM_DESC`, `TYPICAL_DURA
 -- Table structure for table `ROLE`
 --
 
+DROP TABLE IF EXISTS `ROLE`;
 CREATE TABLE IF NOT EXISTS `ROLE` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `ROLE` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -112,6 +115,7 @@ INSERT INTO `ROLE` (`ID`, `ROLE`, `ACCESS_PRIVILEDGE`, `STATUS`, `CREATED_DATETI
 -- Table structure for table `USER`
 --
 
+DROP TABLE IF EXISTS `USER`;
 CREATE TABLE IF NOT EXISTS `USER` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `USERNAME` varchar(50) CHARACTER SET latin1 DEFAULT NULL,
@@ -148,6 +152,7 @@ INSERT INTO `USER` (`ID`, `USERNAME`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `DO
 -- Table structure for table `USER_ROLE`
 --
 
+DROP TABLE IF EXISTS `USER_ROLE`;
 CREATE TABLE IF NOT EXISTS `USER_ROLE` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `USER_ID` int(11) DEFAULT NULL,
