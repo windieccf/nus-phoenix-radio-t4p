@@ -18,6 +18,11 @@ public class UserDelegate {
 	public List<User> retrieveUserList() {
 		return (UserService.getInstance().retrieveUserList());
 	}
+	
+	public List<User> paginateUser(Long pageNo , Long rowPerPage, User user) {
+		return (UserService.getInstance().paginateUser(pageNo , rowPerPage , user));
+	}
+	
 	public User retrieveUser(String username) {
 		return (UserService.getInstance().retrieveUser(username));
 	}

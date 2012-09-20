@@ -178,5 +178,16 @@ public interface BaseDaoIntf <T extends BaseEntity> {
 	 *            be based. Primary-key field should not be set.
 	 */
 	public abstract List<T> searchMatching(T valueObject)	throws SQLException;
+	
+	
+	/**
+	 * Paginate-method. This will read all contents from database table and build
+	 * a List containing valueObjects. based on the page count and row per page
+	 * 
+	 * @param conn
+	 *            This method requires working database connection.
+	 */
+	public abstract List<T> paginate(Long pageNo, Long rowPerPage, T valueObject) throws SQLException;
+	
 
 }
