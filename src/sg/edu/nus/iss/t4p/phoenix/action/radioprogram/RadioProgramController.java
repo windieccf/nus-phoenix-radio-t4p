@@ -10,7 +10,7 @@
  * REVISION HISTORY
  * -----------------------------------------------------------------
  * DATE             AUTHOR          REVISION		DESCRIPTION
- * 15 Sep 2012    	Team 4		    0.1				Initial creating
+ * 15 Sep 2012    	Team 4		    1.0				Initial creating
  * 													
  * 													
  * 
