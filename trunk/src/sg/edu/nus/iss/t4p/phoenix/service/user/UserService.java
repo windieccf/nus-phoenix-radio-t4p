@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.dao.DaoFactory;
+import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 
 public class UserService {
@@ -36,7 +37,12 @@ public class UserService {
 		
 		return user;
 	}
-	public boolean saveUser(User user) {
+	
+	public boolean saveUser(User user) throws BusinessLogicException {
+		boolean isUserExisting = DaoFactory.getInstance().getUserDao().isUserExisting(user);
+		if (user.getId() == null && isUserExisting) {
+				throw new BusinessLogicException("Duplicate user name, please amend.");
+		}
 		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user);	
 		return saveStatus;
 	}
