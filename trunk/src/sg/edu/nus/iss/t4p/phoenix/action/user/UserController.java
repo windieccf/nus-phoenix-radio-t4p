@@ -39,6 +39,7 @@ public class UserController extends BaseController {
 		request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);		
 	}
 	
+
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User user = super.retrieveParameter(request,User.class);
 		boolean saveStatus = false;
