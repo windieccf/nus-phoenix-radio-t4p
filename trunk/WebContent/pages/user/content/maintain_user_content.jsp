@@ -1,5 +1,11 @@
 <%@ include file="/pages/include/tag_include.jsp" %>
 
+<script>
+jQuery(document).ready(function($){
+	$('.date-picker').datepicker({format: 'dd-mm-yyyy'});
+});
+</script>
+
 <div class="well background-white well-shadow" style="height:100%;">
 	<form action="${pageContext.request.contextPath}/controller/saveUser.do" class="form-horizontal" method="post">
 		<fieldset>
@@ -45,7 +51,21 @@
 		  <div class="control-group">
                 <label class="control-label">Date of Birth</label> 
                 <div class="controls">
-                	<input class="required" type="text" name="user.DateOfBirth" value="${user.getDateOfBirth().toString()}" />
+                	<input class="input-medium date-picker" type="text" name="user.DateOfBirth" value="<fmt:formatDate value="${user.dateOfBirth}" pattern="dd-MM-yyyy" />" />
+                </div>
+		 </div>
+
+		  <div class="control-group">
+                <label class="control-label">Join Date</label> 
+                <div class="controls">
+                	<input class="input-medium date-picker" type="text" name="user.DateOfBirth" value="<fmt:formatDate value="${user.joinDate}" pattern="dd-MM-yyyy" />" />
+                </div>
+		 </div>
+
+		  <div class="control-group">
+                <label class="control-label">Password</label> 
+                <div class="controls">
+                	<input class="required" type="password" name="user.password" value="${user.password}" />
                 </div>
 		 </div>
 		 
@@ -66,7 +86,7 @@
 		 <div class="control-group">
                 <label class="control-label">Roles</label> 
                 <div class="controls">
-                	<c:forEach var="item" items="${roles}" varStatus ="status">
+                	<c:forEach var="item" items="${user.roles}" varStatus ="status">
                 		<div>${item.role}</div>
                 	</c:forEach>
                 </div>

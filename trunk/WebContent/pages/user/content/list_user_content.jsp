@@ -8,11 +8,16 @@
 		</fieldset>
 
 		<jsp:include page="/pages/include/messages.jsp" />
-		
+		<div class="row-fluid" >
+			<div class="span12 align-right">
+				<div><a href="<c:url value='/controller/initUser.do'/>" class="btn btn-primary">Create User</a></div>
+			</div>
+		</div>
+		<br/>
 		<div class="row-fluid" >
 			<div class="span12">
-				<div><a href="<c:url value='/controller/initUser.do'/>">Create User</a></div>
-				<table class="table">
+				
+				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th><fmt:message key="username"/></th>
