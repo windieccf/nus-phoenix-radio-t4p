@@ -10,7 +10,9 @@ import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.UserDao;
+import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
+import sg.edu.nus.iss.t4p.phoenix.entity.userrole.UserRole;
 
 public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	
@@ -114,11 +116,27 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	public ArrayList<User> retrievePresenterProducerList(boolean IsPresenter){
 		ArrayList<User> users = new ArrayList<>();
 		try( Connection con = super.getConnection() ){
-			String mySql = "select U.* from USER_ROLE UR INNER JOIN USER U ON UR.USER_ID = U.ID WHERE ROLE = ?";
+			String mySql = "SELECT * FROM " + super.getTableName(User.class.getName()) + " U" +
+					       " WHERE 1=1 " + 
+					       "AND U.ID = (" +
+					       " SELECT DISTINCT(UR.USER_ID) FROM " + super.getTableName(UserRole.class.getName()) + " UR " +
+					       "   INNER JOIN " + super.getTableName(Role.class.getName()) + " R ON R.ID = UR.ROLE_ID " +
+		                   "WHERE 1=1 " +
+					       " AND UR.USER_ID = U.ID " + 
+		                   " AND R.ROLE = ? )" ;
+					       
+			/*SELECT * FROM USER U 
+			WHERE 1=1
+			AND U.ID = (
+					SELECT DISTINCT(UR.ID) FROM USER_ROLE UR 
+						INNER JOIN Role R ON R.ID = UR.ROLE_ID
+						WHERE 1=1
+						AND UR.USER_ID = U.ID
+						AND R.ROLE = ?
+					)*/
 
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
 			
-			// Need to modify
 			if(IsPresenter == true){
 	           stmt.setString(1, "Presenter");
 			}

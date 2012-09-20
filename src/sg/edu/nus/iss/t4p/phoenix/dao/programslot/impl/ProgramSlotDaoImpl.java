@@ -77,7 +77,7 @@ public class ProgramSlotDaoImpl extends BaseDao<ProgramSlot> implements ProgramS
 		
 		try(Connection con = super.getConnection()){
 			StringBuffer mySql = new StringBuffer("SELECT P.ID AS SLOT_ID, P.START_DATETIME AS START_DATETIME, P.END_DATETIME AS END_DATETIME,  " )
-										.append(" UPR.ID AS PRESENTER_ID, UPR.FIRST_NAME AS PRESENTER_NAME , UPO.ID AS PRODUCER_ID, UPO.LAST_NAME AS PRODUCER_NAME, ")
+										.append(" UPR.ID AS PRESENTER_ID, UPR.FIRST_NAME AS PRESENTER_NAME , UPO.ID AS PRODUCER_ID, UPO.FIRST_NAME AS PRODUCER_NAME, ")
 										.append(" RDP.ID AS RADIO_PROGRAM_ID , RDP.PROGRAM_NAME AS RADIO_PROGRAM_NAME ")
 										.append(" FROM " + super.getTableName(ProgramSlot.class.getName())+ " P  " )
 										.append(" LEFT OUTER JOIN " + super.getTableName(RadioProgram.class.getName())+ " RDP  ON RDP.ID = P.RADIO_PROGRAM_ID ")

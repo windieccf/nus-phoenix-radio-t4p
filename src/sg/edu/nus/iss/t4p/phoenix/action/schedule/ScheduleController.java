@@ -20,6 +20,7 @@ import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.MonthlySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.scalar.WeeklySchedule;
 import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
+import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 
 /**
@@ -189,19 +190,51 @@ public class ScheduleController extends BaseController {
 	}
 	
 	protected void doPickPresenter(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		
+		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
+		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
+		request.setAttribute(ConstantAttribute.CALL_BACK_URL, UrlPathEnum.ACTION_CALLBACK_PRESENTER_SCHEDULE.getFrontControlPath());
+		request.getRequestDispatcher(UrlPathEnum.ACTION_PICK_PRESENTER_LIST.getFrontControlPath()).forward(request, response);	
 	}
 	
 	protected void doCallBackPresenter(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		User presenter = (User)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
+		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
+		request.getSession().removeAttribute(ConstantAttribute.FLASH_SESSION);
 		
+		for(ProgramSlot programSlot : weeklySchedule.getProgramSlots()){
+			if(programSlot.isSelected()){
+				programSlot.setPresenter(presenter);
+				programSlot.setPresenterId(presenter.getId());
+				programSlot.toggleSelected();
+			}
+		}
+		request.setAttribute("weeklySchedule", weeklySchedule);
+		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);	
 	}
 	
 	
 	protected void doPickProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
+		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
+		request.setAttribute(ConstantAttribute.CALL_BACK_URL, UrlPathEnum.ACTION_CALLBACK_PRODUCER_SCHEDULE.getFrontControlPath());
+		request.getRequestDispatcher(UrlPathEnum.ACTION_PICK_PRODUCER_LIST.getFrontControlPath()).forward(request, response);	
+	
 	}
 	
 	protected void doCallBackProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
+		User producer = (User)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
+		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
+		request.getSession().removeAttribute(ConstantAttribute.FLASH_SESSION);
 		
+		for(ProgramSlot programSlot : weeklySchedule.getProgramSlots()){
+			if(programSlot.isSelected()){
+				programSlot.setProducer(producer);
+				programSlot.setProducerId(producer.getId());
+				programSlot.toggleSelected();
+			}
+		}
+		request.setAttribute("weeklySchedule", weeklySchedule);
+		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);		
 	}
 	
 	
