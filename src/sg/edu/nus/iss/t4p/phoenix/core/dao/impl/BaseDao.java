@@ -202,7 +202,7 @@ public abstract class BaseDao<T extends BaseEntity> {
 	
 	public void merge(T valueObject)throws NotFoundException, SQLException{
 		
-		StringBuffer mySql = new StringBuffer(" UPDATE" + this.getTableName(klass.getName()) + " SET ");
+		StringBuffer mySql = new StringBuffer(" UPDATE " + this.getTableName(klass.getName()) + " SET ");
 
 		List<Field> fields = valueObject.getColumnField();
 		List<String> columnSet = new ArrayList<String>();
@@ -251,7 +251,7 @@ public abstract class BaseDao<T extends BaseEntity> {
 	}
 	
 	public void removeAll() throws SQLException{
-		StringBuffer mySql = new StringBuffer(" UPDATE" + this.getTableName(klass.getName()) + " SET STATUS = '"+ConstantStatus.DELETE+"' ");
+		StringBuffer mySql = new StringBuffer(" UPDATE " + this.getTableName(klass.getName()) + " SET STATUS = '"+ConstantStatus.DELETE+"' ");
 		
 		try(Connection con = this.getConnection()){
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
