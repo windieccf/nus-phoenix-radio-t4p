@@ -10,11 +10,12 @@
  * REVISION HISTORY
  * -----------------------------------------------------------------
  * DATE             AUTHOR          REVISION		DESCRIPTION
- * 15 Sep 2012    	Team 4		    1.0				Initial creating
+ * 18 Sep 2012    	Team 4		    0.1				Initial creating
  * 													
  * 													
  * 
  */
+
 package sg.edu.nus.iss.t4p.phoenix.action.radioprogram;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 /**
- * Servlet implementation class for RadioProgramController
+ * Servelet implementation class for RadioProgramController
  */
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/radioprogramController/*")
@@ -72,11 +73,4 @@ public class RadioProgramController extends BaseController {
 		request.setAttribute(ConstantAttribute.SELECTED_ITEM, radioProgram);
 		request.getRequestDispatcher(callBackUrl).forward(request, response);	
 	}
-	/*
-	protected void doDisplay(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-        RadioProgram program = (RadioProgramDelegate.getInstance()).getByProgramName(request.getParameter("programName"));
-		request.setAttribute("programList",program);
-		request.getRequestDispatcher("/pages/radioprogram/view_radioprogram.jsp").forward(request, response);		
-	}
-	*/
 }

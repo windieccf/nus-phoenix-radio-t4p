@@ -1,3 +1,21 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY SOURCE CODE OF
+ * Institute of Systems Science, National University of Singapore
+ *
+ * Copyright 2012 Team 4(Part-Time), ISS, NUS, Singapore. All rights reserved.
+ * Use of this source code is subjected to the terms of the applicable license
+ * agreement.
+ *
+ * -----------------------------------------------------------------
+ * REVISION HISTORY
+ * -----------------------------------------------------------------
+ * DATE             AUTHOR          REVISION		DESCRIPTION
+ * 18 Sep 2012    	Team 4		    0.1				Initial creating
+ * 													
+ * 													
+ * 
+ */
+
 package sg.edu.nus.iss.t4p.phoenix.dao.radioprogram;
 
 
@@ -16,6 +34,7 @@ public interface RadioProgramDao extends BaseDaoIntf<RadioProgram>{
 	 * 
 	 * @param conn
 	 *            This method requires working database connection.
+	 * @return List of Radio Program
 	 */
 	public ArrayList<RadioProgram> retrieveProgramList();
 	
@@ -25,9 +44,10 @@ public interface RadioProgramDao extends BaseDaoIntf<RadioProgram>{
 	 *
 	 * @param conn
 	 *            This method requires working database connection.
-	 * @parm programName
+	 * @param programName
 	 *            This parameter used for retrieving RadioProgram Object.
-	 *            It must be individual.             
+	 *            It must be individual.
+	 * @return Radio Program Object for the specified program name.             
 	 */
 	public RadioProgram getByProgramName(String programName);
 
