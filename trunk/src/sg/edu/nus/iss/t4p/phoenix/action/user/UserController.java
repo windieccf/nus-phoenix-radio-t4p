@@ -1,3 +1,20 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY SOURCE CODE OF
+ * Institute of Systems Science, National University of Singapore
+ *
+ * Copyright 2012 Team 4(Part-Time), ISS, NUS, Singapore. All rights reserved.
+ * Use of this source code is subjected to the terms of the applicable license
+ * agreement.
+ *
+ * -----------------------------------------------------------------
+ * REVISION HISTORY
+ * -----------------------------------------------------------------
+ * DATE             AUTHOR          REVISION		DESCRIPTION
+ * 20 Sep 2012    	Team 4		    1.0				Initial creating
+ * 													
+ * 													
+ * 
+ */
 package sg.edu.nus.iss.t4p.phoenix.action.user;
 
 import java.io.IOException;
@@ -14,10 +31,24 @@ import sg.edu.nus.iss.t4p.phoenix.delegate.user.UserDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
+/**
+* Login Authentication Controller Action class 
+* @author Mansoor M I A0092661A
+* @version 1.0
+*/
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/userController/*")
 public class UserController extends BaseController {
 	
+	/**
+	 * Method to retrieve users and forward the request to list user page for shoing 
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		// no pagination?
 		
@@ -29,6 +60,16 @@ public class UserController extends BaseController {
 		request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);		
 	}
 	
+	/**
+	 * Method to initialize the currently logged in user and forward to maintain_user page
+	 * for user profile maintenance.
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */	
 	protected void doInit(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		String userName = request.getParameter("username");
 		User user = new User();
@@ -39,7 +80,18 @@ public class UserController extends BaseController {
 		request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);		
 	}
 	
-
+	/**
+	 * Method to save the changes made in the maintain_user page to database. 
+	 * Method will throw exception if either User Name left empty.
+	 * The user will be redirected to user listing page upon successful saving otherwise,
+	 * remain in the maintain_user to re-submit the page content.
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User user = super.retrieveParameter(request,User.class);
 		boolean saveStatus = false;
