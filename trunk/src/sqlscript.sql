@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 22, 2012 at 11:43 AM
+-- Generation Time: Sep 22, 2012 at 11:52 AM
 -- Server version: 5.5.25a
 -- PHP Version: 5.4.4
 
@@ -11561,19 +11561,19 @@ CREATE TABLE IF NOT EXISTS `USER` (
 --
 
 INSERT INTO `USER` (`ID`, `USERNAME`, `PASSWORD`, `FIRST_NAME`, `LAST_NAME`, `DOB`, `EMAIL`, `ADDRESS`, `CONTACT_HOME`, `CONTACT_MOBILE`, `JOIN_DATE`, `STATUS`, `CREATED_BY_ID`, `MODIFIED_BY_ID`, `CREATED_DATETIME`, `MODIFIED_DATETIME`) VALUES
-(1, 'admin', 'password', 'Administrator', 'Account', '1980-03-12 00:00:00', 'iss4pt@googlegroups.com', 'Institute Of System Science (ISS)25 Heng Mui Keng TerraceSingapore 119615', NULL, NULL, '2012-09-01 00:00:00', 'D', 1, 1, '2012-09-15 00:00:00', '2012-09-15 00:00:00'),
-(2, 'manager', 'password', 'Manager', 'User', '1981-02-18 00:00:00', 'manager_phoenix_radio@gmail.com', '697B East Coast Road', NULL, NULL, '2012-09-12 00:00:00', 'D', 1, 1, '2012-09-17 12:20:19', '2012-09-16 04:21:10'),
+(1, 'admin', 'password', 'Administrator', 'Account', '1980-03-12 00:00:00', 'iss4pt@googlegroups.com', 'Institute Of System Science (ISS)25 Heng Mui Keng TerraceSingapore 119615', NULL, NULL, '2012-09-01 00:00:00', 'A', 1, 1, '2012-09-15 00:00:00', '2012-09-15 00:00:00'),
+(2, 'manager', 'password', 'Manager', 'User', '1981-02-18 00:00:00', 'manager_phoenix_radio@gmail.com', '697B East Coast Road', NULL, NULL, '2012-09-12 00:00:00', 'A', 1, 1, '2012-09-17 12:20:19', '2012-09-16 04:21:10'),
 (3, 'presenter', 'password', 'Presenter', 'User', '1972-08-06 00:00:00', 'presenter_phoenix_radio@gmail.com', '101 Yishun Ave 5 #01-37', NULL, NULL, '2012-07-11 00:00:00', 'A', 1, 1, '2012-09-13 02:22:39', '2012-09-18 04:12:14'),
 (4, 'producer', 'password', 'Producer', 'User', '1976-03-16 00:00:00', 'producer_phoenix_radio@gmail.com', '351 Jurong East Street 31, #01-93', NULL, NULL, '2012-08-08 00:00:00', 'A', 1, 1, '2012-09-15 18:20:46', '2012-09-16 13:22:32'),
-(5, 'admin111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'A', NULL, NULL, NULL, NULL),
-(6, 'robin', 'password', 'Robin', 'Foe', '2012-09-20 23:01:31', 'WWW@www.com', 'singapore', '93805110', '91157054', NULL, 'A', NULL, NULL, NULL, NULL),
-(8, 'aman', 'password', 'Aman', 'Sharma', '1981-09-18 00:00:00', NULL, NULL, NULL, NULL, NULL, 'A', NULL, NULL, NULL, NULL),
-(9, 'changfeng', 'password', 'Chen', 'Changfeng', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 'kenny', 'password', 'Kenny', 'Hartono', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 'mansoor', 'password', 'Mansoor', 'M I', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 'songlei', 'password', 'Song', 'Lei', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 'srinivas', 'password', 'Srinivas', 'Appalla', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 'yueyang', 'password', 'Yue', 'Yang', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(5, 'admin111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(6, 'robin', 'password', 'Robin', 'Foe', '2012-09-20 23:01:31', 'WWW@www.com', 'singapore', '93805110', '91157054', NULL, 'A', 1, 1, NULL, NULL),
+(8, 'aman', 'password', 'Aman', 'Sharma', '1981-09-18 00:00:00', NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(9, 'changfeng', 'password', 'Chen', 'Changfeng', NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(10, 'kenny', 'password', 'Kenny', 'Hartono', NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(11, 'mansoor', 'password', 'Mansoor', 'M I', NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(13, 'songlei', 'password', 'Song', 'Lei', NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(14, 'srinivas', 'password', 'Srinivas', 'Appalla', NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL),
+(15, 'yueyang', 'password', 'Yue', 'Yang', NULL, NULL, NULL, NULL, NULL, NULL, 'A', 1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -11619,5 +11619,4 @@ INSERT INTO `USER_ROLE` (`ID`, `USER_ID`, `ROLE_ID`) VALUES
 (23, 14, 4),
 (24, 10, 4),
 (25, 6, 4),
-(26, 8, 4),
 (27, 9, 4);
