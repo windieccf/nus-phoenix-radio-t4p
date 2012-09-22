@@ -1,3 +1,20 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY SOURCE CODE OF
+ * Institute of Systems Science, National University of Singapore
+ *
+ * Copyright 2012 Team 4(Part-Time), ISS, NUS, Singapore. All rights reserved.
+ * Use of this source code is subjected to the terms of the applicable license
+ * agreement.
+ *
+ * -----------------------------------------------------------------
+ * REVISION HISTORY
+ * -----------------------------------------------------------------
+ * DATE             AUTHOR          REVISION		DESCRIPTION
+ * 20 Sep 2012    	Team 4		    1.0				Initial creating
+ * 													
+ * 													
+ * 
+ */
 package sg.edu.nus.iss.t4p.phoenix.action.schedule;
 
 import java.io.IOException;
@@ -20,11 +37,24 @@ import sg.edu.nus.iss.t4p.phoenix.entity.schedule.ProgramSlot;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4DateUtil;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
-
+/**
+* Schedule Program Controller Action class 
+* @author Robin Foe A0092657U
+* @version 1.0
+*/
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/scheduledProgramController/*")
 public class ScheduledProgramController extends BaseController{
 	
+	/**
+	 * Method to list scheduled program by week
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		String callBackUrl = request.getParameter(ConstantAttribute.CALL_BACK_URL);
@@ -49,6 +79,15 @@ public class ScheduledProgramController extends BaseController{
 		request.getRequestDispatcher("/pages/schedule/list_scheduled_program.jsp").forward(request, response);
 	}
 	
+	/**
+	 * Method to select scheduled program by week and then to loop through slots in the week.
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */	
 	protected void doSelectScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		List<ProgramSlot> programSlots = new ArrayList<ProgramSlot>();

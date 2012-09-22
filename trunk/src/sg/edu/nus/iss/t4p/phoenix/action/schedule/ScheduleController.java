@@ -1,3 +1,20 @@
+/*
+ * CONFIDENTIAL AND PROPRIETARY SOURCE CODE OF
+ * Institute of Systems Science, National University of Singapore
+ *
+ * Copyright 2012 Team 4(Part-Time), ISS, NUS, Singapore. All rights reserved.
+ * Use of this source code is subjected to the terms of the applicable license
+ * agreement.
+ *
+ * -----------------------------------------------------------------
+ * REVISION HISTORY
+ * -----------------------------------------------------------------
+ * DATE             AUTHOR          REVISION		DESCRIPTION
+ * 20 Sep 2012    	Team 4		    1.0				Initial creating
+ * 													
+ * 													
+ * 
+ */
 package sg.edu.nus.iss.t4p.phoenix.action.schedule;
 
 import java.io.IOException;
@@ -104,7 +121,15 @@ public class ScheduleController extends BaseController {
 		//this.doList(request, response);
 	}
 	
-	
+	/**
+	 * Method to prepare for viewing schedule by year month day
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	private void doPrepareMonthlyView(HttpServletRequest request,	HttpServletResponse response , MonthlySchedule monthlySchedule) throws ServletException, IOException{
 		
 		Calendar cal = new GregorianCalendar();
@@ -141,6 +166,15 @@ public class ScheduleController extends BaseController {
 		request.getRequestDispatcher(UrlPathEnum.ACTION_PICK_RADIO_LIST.getFrontControlPath()).forward(request, response);
 	}
 	
+	/**
+	 * Callback method for RadioProgram
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	protected void doCallBackRadioProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		RadioProgram radioProgram = (RadioProgram)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
 		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
@@ -158,6 +192,15 @@ public class ScheduleController extends BaseController {
 		
 	}
 	
+	/**
+	 * Method for selecting Scheduled Program by Week. The weekly information retrieved from Http Request variable
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	protected void doPickScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
@@ -166,6 +209,17 @@ public class ScheduleController extends BaseController {
 
 	}
 	
+	/**
+	 * Method for ScheduledProgram CallBack. 
+	 * The weekly information retrieved from Http Request variable and others retrieved from constant variables.
+	 * Method to loop through all the slots in a selected program.
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	@SuppressWarnings("unchecked")
 	protected void doCallBackScheduledProgram(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 
@@ -189,6 +243,15 @@ public class ScheduleController extends BaseController {
 		
 	}
 	
+	/**
+	 * Method for selecting Presenter
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */
 	protected void doPickPresenter(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
@@ -196,6 +259,15 @@ public class ScheduleController extends BaseController {
 		request.getRequestDispatcher(UrlPathEnum.ACTION_PICK_PRESENTER_LIST.getFrontControlPath()).forward(request, response);	
 	}
 	
+	/**
+	 * Method for CallBack - Presenter Information
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */	
 	protected void doCallBackPresenter(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User presenter = (User)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
 		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
@@ -212,7 +284,15 @@ public class ScheduleController extends BaseController {
 		request.getRequestDispatcher("/pages/schedule/maintain_schedule.jsp").forward(request, response);	
 	}
 	
-	
+	/**
+	 * Method for selecting Producer
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */	
 	protected void doPickProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		WeeklySchedule weeklySchedule = super.retrieveParameter(request, WeeklySchedule.class);
 		request.getSession().setAttribute(ConstantAttribute.FLASH_SESSION, weeklySchedule);
@@ -221,6 +301,15 @@ public class ScheduleController extends BaseController {
 	
 	}
 	
+	/**
+	 * Method for CallBack - Producer Information
+	 * @param request the HttpServletRequest
+	 * @param response the HttpServletResponse
+	 * @exception javax.servlet.ServletException
+	 * @exception java.io.IOException
+	 * @see javax.servlet.ServletException
+	 * @see java.io.IOException
+	 */		
 	protected void doCallBackProducer(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User producer = (User)request.getAttribute(ConstantAttribute.SELECTED_ITEM);
 		WeeklySchedule weeklySchedule = (WeeklySchedule) request.getSession().getAttribute(ConstantAttribute.FLASH_SESSION);
