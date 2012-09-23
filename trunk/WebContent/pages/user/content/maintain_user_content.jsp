@@ -94,7 +94,7 @@ jQuery(document).ready(function($){
                 <label class="control-label">Roles</label> 
                 <div class="controls">
                 	<c:forEach var="item" items="${user.roles}" varStatus ="status">
-                		<div>${item.role}</div>
+                		<div class="controls"><input type="checkbox" id="${item.id}" value="${item.id}" name="user.roles.id"/>	${item.role}</div>
                 	</c:forEach>
                 </div>
 		 </div>
@@ -103,8 +103,8 @@ jQuery(document).ready(function($){
                 <label class="control-label"></label>  
                 <div class="controls align-right" style="width:220px !important;">
                 		<input type="hidden" name="status" id="status" value="A"/>
-                		<input type="submit" class="btn btn-danger" value="<fmt:message key="button.submit"/>"/> 
-                		<input type="button" class="btn btn-primary" value="<fmt:message key="button.cancel"/>" onClick="history.go(-1);return true;"/>
+                		<input type="submit" class="btn btn-primary" value="<fmt:message key="button.submit"/>"/> 
+                		<input type="button" class="btn btn-danger" value="<fmt:message key="button.cancel"/>" onClick="history.go(-1);return true;"/>
                 </div>
 		 </div> 
 	
