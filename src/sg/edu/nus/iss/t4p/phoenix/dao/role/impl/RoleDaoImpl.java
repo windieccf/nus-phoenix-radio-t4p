@@ -46,5 +46,28 @@ public class RoleDaoImpl extends BaseDao<Role> implements RoleDao{
 		}
 		
 	}
+	
+	public List<Role> getRoles() throws SQLException {
+		List<Role> roles = null;
+		try(Connection con = super.getConnection()){
+			String mySql = "select R.* from ROLE R";
+				PreparedStatement stmt = con.prepareStatement(mySql.toString());
 
+				ResultSet rs = stmt.executeQuery();
+				roles = new ArrayList<Role>();			
+				
+			while(rs.next()){
+				Role role = super.createValueObject();
+				super.assignValue(role, role.getColumnField(), rs);
+				roles.add(role);
+			}			
+			return roles;
+						
+			
+			
+		}catch(Exception e){
+			throw e;
+		}
+		
 	}
+}
