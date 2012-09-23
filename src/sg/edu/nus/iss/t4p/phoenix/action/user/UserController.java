@@ -27,7 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import sg.edu.nus.iss.t4p.phoenix.core.action.BaseController;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
+import sg.edu.nus.iss.t4p.phoenix.delegate.role.RoleDelegate;
 import sg.edu.nus.iss.t4p.phoenix.delegate.user.UserDelegate;
+import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
@@ -51,11 +53,7 @@ public class UserController extends BaseController {
 	 */
 	protected void doList(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		// no pagination?
-		
-//		List<User> users = (UserDelegate.getInstance().retrieveUserList());
 		List<User> users = (UserDelegate.getInstance().paginateUser(0L, 100L, new User() ));	
-		
-		
 		request.setAttribute("users", users);
 		request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);		
 	}
@@ -71,11 +69,16 @@ public class UserController extends BaseController {
 	 * @see java.io.IOException
 	 */	
 	protected void doInit(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		String userName = request.getParameter("username");
+		List<Role> role = (RoleDelegate.getInstance().retrieveRoleList());
 		User user = new User();
+		
+		String userName = request.getParameter("username");
 		if (userName != null) {
 			user = (UserDelegate.getInstance().retrieveUser(userName));
-		} 
+		} else{
+			user.setRoles(role);
+		}
+		
 		request.setAttribute("user", user);
 		request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);		
 	}
