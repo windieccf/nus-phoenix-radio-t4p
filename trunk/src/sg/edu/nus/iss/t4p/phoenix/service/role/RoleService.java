@@ -24,5 +24,14 @@ public class RoleService {
 		}
 		return roles;
 	}
+	public List<Role> retrieveRoleList()  {
+		List<Role> roles = null;
+		try {
+			roles = DaoFactory.getInstance().getRoleDao().getRoles();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return roles;
+	}
 	
 }
