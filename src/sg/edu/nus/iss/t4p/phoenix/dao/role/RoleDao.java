@@ -9,5 +9,5 @@ import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
 public interface RoleDao extends BaseDaoIntf<Role>{
 	
 	public List<Role> getRolesByUserId(Long userId) throws SQLException;
-
+	public List<Role> getRoles() throws SQLException;
 }
