@@ -17,8 +17,8 @@ import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
 
 public class RadioProgramDaoTest {
 
-//	@Test
-	public void retrieveRadioProgramById(){
+	//@Test
+	public void testRetrieveRadioProgramById(){
 		Long radioprogramId = 1L;
 		RadioProgram radioprogram = null;
 		try {
@@ -33,45 +33,48 @@ public class RadioProgramDaoTest {
 		Assert.assertTrue(radioprogram.getId() != null);
 	}
 	
-//	@Test
-	public void retrieveRadioProgramByObject(){
+	@Test
+	public void testRetrieveRadioProgramByObject(){
 		Long radioprogramId = 1L;
 		RadioProgram radioprogram = null;
 		try {
 			radioprogram = new RadioProgram();
 			radioprogram.setId(radioprogramId);
+			radioprogram.setProgramName("Hello Singapore");
+			radioprogram.setProgramDesc("Hello Singapore!!!");
+			
 			DaoFactory.getInstance().getRadioProgramDao().load(radioprogram);
 			System.err.println(radioprogram.getProgramName());
-			Assert.assertTrue(radioprogram.getProgramName() != null);
+			Assert.assertTrue(radioprogram.getProgramName().equals("Hello Singapore"));
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		Assert.assertTrue(radioprogram.getId() != null);
+		Assert.assertTrue(radioprogram.getProgramName() != null);
 	}
 	
-//	@Test
-	public void retrieveCorrectRadioProgram(){
-		String radioprogramname = "GoodProgram";
+	//@Test
+	public void testRetrieveCorrectRadioProgram(){
+		String radioprogramname = "The Living Room";
 		RadioProgram radioprogram = DaoFactory.getInstance().getRadioProgramDao().getByProgramName(radioprogramname);
 		Assert.assertTrue(radioprogramname.equals(radioprogram.getProgramName()));
 	}
 	
-//	@Test
-	public void insertRadioProgram(){
+	@Test
+	public void testInsertRadioProgram(){
 		RadioProgram radioprogram = new RadioProgram();
 		try {
-
-			radioprogram.setProgramName("GoodProgram");
-			radioprogram.setProgramDesc("SongLei's Song");
+			
+			radioprogram.setProgramName("Hello Singapore");
+			radioprogram.setProgramDesc("Hello Singapore!!!!");
 			radioprogram.setTypicalDuration("21:20:00");
 			try {
 				DaoFactory.getInstance().getRadioProgramDao().persist(radioprogram);
 			} catch (NotFoundException e) {
 				e.printStackTrace();
 			}
-			System.err.println(radioprogram.getId());
+			System.err.println(radioprogram.getProgramName());
 			Assert.assertTrue(radioprogram.getId() != null);
 		} catch (SQLException e) {
 			e.printStackTrace();
