@@ -54,13 +54,14 @@ public interface UserDao extends BaseDaoIntf<User>{
 	
 	/**
 	 * saveUser-method. This will save User information to database.  
+	 * @param roleList 
 	 * @param conn
 	 *            This method requires working database connection.
 	 * @param User
 	 *            User Object to be save
 	 * @return True/False to indicate whether save user is successful.
 	 */
-	public boolean saveUser(User user);
+	public boolean saveUser(User user, String[] roleList);
 	
 	
 	/**
