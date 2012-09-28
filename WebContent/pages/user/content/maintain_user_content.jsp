@@ -93,9 +93,12 @@ jQuery(document).ready(function($){
 		 <div class="control-group">
                 <label class="control-label">Roles</label> 
                 <div class="controls">
-                	<c:forEach var="item" items="${user.roles}" varStatus ="status">
-                		<div class="controls"><input type="checkbox" id="${item.id}" value="${item.id}" name="user.roles.id"/>	${item.role}</div>
-                	</c:forEach>
+                	<select name="roleList" size="4" multiple="multiple">
+				        <option value="1" ${Admin!=null?"selected":""}>Admin</option>
+				        <option value="2" ${Manager!=null?"selected":""}>Manager</option>
+				        <option value="3" ${Presenter!=null?"selected":""}>Presenter</option>
+				        <option value="4" ${Producer!=null?"selected":""}>Producer</option>
+				    </select>
                 </div>
 		 </div>
 		 

@@ -90,12 +90,13 @@ public class UserDelegate {
 	/**
 	 * saveUser-method. This will save User information to database.  
 	 * 
-	 * @param User
-	 *            User Object to be save
+	 * @param user
+	 * @param roleList
 	 * @return True/False to indicate whether save user is successful.
+	 * @throws BusinessLogicException
 	 */
-	public boolean saveUser(User user) throws BusinessLogicException {
-		return (UserService.getInstance().saveUser(user));
+	public boolean saveUser(User user, String[] roleList) throws BusinessLogicException {
+		return (UserService.getInstance().saveUser(user, roleList));
 	}
 	
 	

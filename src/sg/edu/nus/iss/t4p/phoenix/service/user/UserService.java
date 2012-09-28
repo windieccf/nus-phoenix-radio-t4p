@@ -110,16 +110,17 @@ public class UserService {
 	
 	/**
 	 * saveUser-method. This will save User information to database.  
+	 * @param roleList 
 	 * 
 	 * @param User
 	 *            User Object to be save
 	 * @return True/False to indicate whether save user is successful.
 	 */
-	public boolean saveUser(User user) throws BusinessLogicException {
+	public boolean saveUser(User user, String[] roleList) throws BusinessLogicException {
 		if(!user.isPkSet() && DaoFactory.getInstance().getUserDao().isUserExisting(user))
 			throw new BusinessLogicException("Duplicate user name, please amend.");
 		
-		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user);	
+		boolean saveStatus = DaoFactory.getInstance().getUserDao().saveUser(user, roleList);	
 		return saveStatus;
 	}
 	

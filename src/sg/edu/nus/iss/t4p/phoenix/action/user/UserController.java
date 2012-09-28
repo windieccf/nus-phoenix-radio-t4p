@@ -69,17 +69,19 @@ public class UserController extends BaseController {
 	 * @see java.io.IOException
 	 */	
 	protected void doInit(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
-		List<Role> role = (RoleDelegate.getInstance().retrieveRoleList());
 		User user = new User();
 		
 		String userName = request.getParameter("username");
 		if (userName != null) {
 			user = (UserDelegate.getInstance().retrieveUser(userName));
-		} else{
-			user.setRoles(role);
-		}
+			List<Role> roles = user.getRoles();
+			for (Role role : roles) {
+				request.setAttribute(""+role.getRole()+"", ""+role.getRole()+"");
+			}
+		} 
 		
 		request.setAttribute("user", user);
+		
 		request.getRequestDispatcher("/pages/user/maintain_user.jsp").forward(request, response);		
 	}
 	
@@ -98,10 +100,13 @@ public class UserController extends BaseController {
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User user = super.retrieveParameter(request,User.class);
 		boolean saveStatus = false;
+		String[] roleList = request.getParameterValues("roleList");
 			try {
 				if(T4StringUtil.isEmpty(user.getUsername()))
 					throw new BusinessLogicException("Please fill in Username");
-				saveStatus = (UserDelegate.getInstance().saveUser(user));
+				if(roleList.length == 0)
+					throw new BusinessLogicException("Please select roles for user");
+				saveStatus = (UserDelegate.getInstance().saveUser(user, roleList));
 			} catch (BusinessLogicException e) {
 				request.setAttribute("ERR", e.getMessage());
 				request.setAttribute("user", user);
