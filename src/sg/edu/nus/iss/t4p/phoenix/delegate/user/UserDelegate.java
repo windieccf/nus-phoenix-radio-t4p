@@ -95,8 +95,8 @@ public class UserDelegate {
 	 * @return True/False to indicate whether save user is successful.
 	 * @throws BusinessLogicException
 	 */
-	public boolean saveUser(User user, String[] roleList) throws BusinessLogicException {
-		return (UserService.getInstance().saveUser(user, roleList));
+	public boolean saveUser(User user) throws BusinessLogicException {
+		return (UserService.getInstance().saveUser(user));
 	}
 	
 	

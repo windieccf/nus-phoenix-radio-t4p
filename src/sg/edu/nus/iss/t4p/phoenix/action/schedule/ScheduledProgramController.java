@@ -39,7 +39,7 @@ import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 /**
 * Schedule Program Controller Action class 
-* @author Robin Foe A0092657U
+* @author Robin Foe A0092657U , Kenny Hartono A0092674W
 * @version 1.0
 */
 @SuppressWarnings("serial")

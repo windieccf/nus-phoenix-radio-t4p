@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import sg.edu.nus.iss.t4p.phoenix.core.action.BaseController;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.BusinessLogicException;
-import sg.edu.nus.iss.t4p.phoenix.delegate.role.RoleDelegate;
 import sg.edu.nus.iss.t4p.phoenix.delegate.user.UserDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
 import sg.edu.nus.iss.t4p.phoenix.entity.user.User;
@@ -100,13 +99,15 @@ public class UserController extends BaseController {
 	protected void doSave(HttpServletRequest request,	HttpServletResponse response) throws ServletException, IOException{
 		User user = super.retrieveParameter(request,User.class);
 		boolean saveStatus = false;
-		String[] roleList = request.getParameterValues("roleList");
 			try {
 				if(T4StringUtil.isEmpty(user.getUsername()))
 					throw new BusinessLogicException("Please fill in Username");
-				if(roleList.length == 0)
+				
+				if(user.getRoles() == null ||  user.getRoles().isEmpty())
 					throw new BusinessLogicException("Please select roles for user");
-				saveStatus = (UserDelegate.getInstance().saveUser(user, roleList));
+				
+				saveStatus = (UserDelegate.getInstance().saveUser(user));
+				
 			} catch (BusinessLogicException e) {
 				request.setAttribute("ERR", e.getMessage());
 				request.setAttribute("user", user);
@@ -117,7 +118,6 @@ public class UserController extends BaseController {
 		if (saveStatus) {
 			request.setAttribute("INF", "User saved successfully.");
 			List<User> users = (UserDelegate.getInstance().paginateUser(0L, 100L, new User() ));
-//			List<User> users = (UserDelegate.getInstance().retrieveUserList());
 			
 			request.setAttribute("users", users);
 			request.getRequestDispatcher("/pages/user/list_user.jsp").forward(request, response);	

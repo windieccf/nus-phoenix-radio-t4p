@@ -93,7 +93,7 @@ jQuery(document).ready(function($){
 		 <div class="control-group">
                 <label class="control-label">Roles</label> 
                 <div class="controls">
-                	<select name="roleList" size="4" multiple="multiple">
+                	<select name="user.roles.id" size="4" multiple="multiple">
 				        <option value="1" ${Admin!=null?"selected":""}>Admin</option>
 				        <option value="2" ${Manager!=null?"selected":""}>Manager</option>
 				        <option value="3" ${Presenter!=null?"selected":""}>Presenter</option>

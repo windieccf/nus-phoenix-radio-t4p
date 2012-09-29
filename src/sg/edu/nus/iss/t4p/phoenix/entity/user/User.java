@@ -22,9 +22,12 @@ import java.util.List;
 
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Column.TYPE;
+import sg.edu.nus.iss.t4p.phoenix.core.annotation.JoinTable;
 import sg.edu.nus.iss.t4p.phoenix.core.annotation.Table;
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantRole;
 import sg.edu.nus.iss.t4p.phoenix.core.entity.BaseEntity;
 import sg.edu.nus.iss.t4p.phoenix.entity.role.Role;
+import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 @SuppressWarnings("serial")
 @Table(name="USER")
@@ -100,12 +103,24 @@ public class User extends BaseEntity{
 	public Date getJoinDate() {return joinDate;}
 	public void setJoinDate(Date joinDate) {this.joinDate = joinDate;}
 	
+	
+	@JoinTable(tableName="USER_ROLE", columnName="USER_ID", referenceColumnName="ROLE_ID", columnType=JoinTable.TYPE.ONE_TO_MANY)
 	private List<Role> roles;
-	public List<Role> getRoles() {
-		return roles;
-	}
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public List<Role> getRoles() {return roles;}
+	public void setRoles(List<Role> roles) {this.roles = roles;}
+	
+	public boolean isProducer(){ return (this.getRoleByCode(ConstantRole.PRODUCER) != null);}
+	public boolean isPresenter(){ return (this.getRoleByCode(ConstantRole.PRESENTER) != null); }
+	public boolean isAdmin(){ return (this.getRoleByCode(ConstantRole.ADMIN) != null); }
+	public boolean isStationManager(){ return (this.getRoleByCode(ConstantRole.STATION_MANAGER) != null); }
+	
+	private Role getRoleByCode(String code){
+		if(T4StringUtil.isEmpty(code)) return null;
+		for(Role role : this.roles){
+			if(code.equals(role.getRole()) )
+				return role;
+		}
+		return null;
 	}
 	
 	

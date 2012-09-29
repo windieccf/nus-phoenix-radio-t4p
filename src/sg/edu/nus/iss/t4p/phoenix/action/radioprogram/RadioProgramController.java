@@ -32,9 +32,12 @@ import sg.edu.nus.iss.t4p.phoenix.delegate.radioprogram.RadioProgramDelegate;
 import sg.edu.nus.iss.t4p.phoenix.entity.radioprogram.RadioProgram;
 import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
+
 /**
- * Servelet implementation class for RadioProgramController
- */
+* Servlet implementation class for RadioProgramController
+* @author Robin Foe A0092657U , Yue Yang A0072607A
+* @version 1.0
+*/
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/radioprogramController/*")
 public class RadioProgramController extends BaseController {
