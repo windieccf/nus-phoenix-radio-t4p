@@ -33,7 +33,7 @@ import sg.edu.nus.iss.t4p.phoenix.utility.T4StringUtil;
 
 /**
 * Presenter Producer Controller Action class 
-* @author Robin Foe A0092657U
+* @author Robin Foe A0092657U, Song Lei A0092601N
 * @version 1.0
 */
 @SuppressWarnings("serial")

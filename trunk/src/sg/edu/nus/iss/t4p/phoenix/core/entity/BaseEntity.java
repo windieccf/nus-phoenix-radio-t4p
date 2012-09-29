@@ -131,6 +131,7 @@ public abstract class BaseEntity implements Cloneable, Serializable{
 	}
 	
 	
+	
 	/*************************************** CALL BACK METHOD UPON PERSIST *********************************************************************/
 	
 	@PrePersist

@@ -71,21 +71,25 @@
 		/** GLOBAL END********************************/
 
 		
-		$('.date-picker').datepicker(datePickerParameter).on('changeDate', _onDateChange);
-		$('.time-picker').timepicker(timePickerParameter);
-		$('.status-button').click(_onStatusChange);
+		<c:if test="${sessionScope.user.isAdmin() or sessionScope.user.isStationManager()}">
+				$('.date-picker').datepicker(datePickerParameter).on('changeDate', _onDateChange);
+				$('.time-picker').timepicker(timePickerParameter);
+				$('.status-button').click(_onStatusChange);
+				
+				$('.radio-program-button').click(_onRadioProgramClicked);
+				$('.presenter-button').click(_onPresenterClicked);
+				$('.producer-button').click(_onProducerClicked);
+				
+				$('#save-button').click(function(){ 
+					$('#scheduler-form').submit(); 
+				});
+				$('#populate-schedule-button').click(function(){
+					$('#scheduler-form').attr('action',  '${pageContext.request.contextPath}/controller/pickScheduledProgram.do'  );
+					$('#scheduler-form').submit(); 
+				});
+		</c:if>
 		
-		$('.radio-program-button').click(_onRadioProgramClicked);
-		$('.presenter-button').click(_onPresenterClicked);
-		$('.producer-button').click(_onProducerClicked);
 		
-		$('#save-button').click(function(){ 
-			$('#scheduler-form').submit(); 
-		});
-		$('#populate-schedule-button').click(function(){
-			$('#scheduler-form').attr('action',  '${pageContext.request.contextPath}/controller/pickScheduledProgram.do'  );
-			$('#scheduler-form').submit(); 
-		});
 		
 		$('#add-new-button').click(function(){
 			var templateInput = $('#template-input').clone();
@@ -126,11 +130,12 @@
 				<fmt:message key="to" /> <span class="label label-info"> ${requestScope.weeklySchedule.endDateAsFullMonthDisplay}</span>
 			</div>
 			<div class="span7 align-right">
-				<a id="add-new-button" class="btn btn-info"><fmt:message key="add_new_slot" /></a>
-				<a id="populate-schedule-button" class="btn btn-info"><fmt:message key="populate_slot" /></a>
-				
-				<a id="save-button" class="btn btn-primary"><fmt:message key="save" /></a>
-				|
+				<c:if test="${sessionScope.user.isAdmin() or sessionScope.user.isStationManager()}">
+					<a id="add-new-button" class="btn btn-info"><fmt:message key="add_new_slot" /></a>
+					<a id="populate-schedule-button" class="btn btn-info"><fmt:message key="populate_slot" /></a>
+					<a id="save-button" class="btn btn-primary"><fmt:message key="save" /></a>
+					|
+				</c:if>
 				<a href="<c:url value='/controller/listSchedule.do'/>" class="btn btn-danger" ><fmt:message key="cancel" /></a>
 			</div>
 			
@@ -153,15 +158,34 @@
 						<c:forEach var="item" items="${requestScope.weeklySchedule.programSlots}" varStatus ="status">
 							<tr>
 								<td align="left" valign="top" width="20%">
-									<input class="input-small date-picker" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy" /> ">
-									<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="HH:mm" />" />
-									<input type="hidden" name="weeklySchedule.programSlots.id" value="${item.id}"/>
-									<input type="hidden" name="weeklySchedule.programSlots.startDateTime" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy HH:mm" /> "/>
+									<c:choose>
+										<c:when test="${sessionScope.user.isAdmin() or sessionScope.user.isStationManager()}">
+											<input class="input-small date-picker" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy" /> " />
+											<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="HH:mm" />" />
+											<input type="hidden" name="weeklySchedule.programSlots.id" value="${item.id}"/>
+											<input type="hidden" name="weeklySchedule.programSlots.startDateTime" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy HH:mm" /> "/>
+										</c:when>
+										<c:otherwise>
+											<input class="input-small date-picker" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="dd-MM-yyyy" /> " disabled />
+											<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.startDateTime}" pattern="HH:mm" />"  disabled />
+										</c:otherwise>
+									</c:choose>
 								</td>
 								<td align="left" valign="top" width="20%">
-									<input class=" input-small date-picker" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy" /> ">
-									<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="HH:mm" />" />
-									<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy HH:mm" />"/>
+									<c:choose>
+										<c:when test="${sessionScope.user.isAdmin() or sessionScope.user.isStationManager()}">
+											<input class=" input-small date-picker" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy" /> "/>
+											<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="HH:mm" />" />
+											<input type="hidden" name="weeklySchedule.programSlots.endDateTime" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy HH:mm" />"/>
+										</c:when>
+										<c:otherwise>
+											<input class=" input-small date-picker" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="dd-MM-yyyy" /> " disabled/>
+											<input class="time-picker input-mini" type="text" value="<fmt:formatDate value="${item.endDateTime}" pattern="HH:mm" />" disabled />
+											
+										</c:otherwise>
+									</c:choose>
+								
+								
 								</td>
 								<td align="left" valign="top">
 									<span><i class="icon-headphones radio-program-button" style="cursor: pointer;"></i>&nbsp;<c:out value="${item.radioProgram.programName}"/>&nbsp;</span>

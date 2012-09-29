@@ -7,8 +7,10 @@
 				<li><a href="<c:url value='/pages/login/login.jsp'/>"><i class="icon-chevron-right"></i><fmt:message key="caption.menu.login"/></a></li>
       		</c:when>
       		<c:otherwise>
-		      	<li><a href="<c:url value='/controller/listUser.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.user"/></a></li>
-				<li><a href="<c:url value='/controller/listSchedule.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.schedule"/></a></li>
+      			<c:if test="${sessionScope.user.isAdmin()}">
+      				<li><a href="<c:url value='/controller/listUser.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.user"/></a></li>
+      			</c:if>
+		      	<li><a href="<c:url value='/controller/listSchedule.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.schedule"/></a></li>
 				<li><a href="<c:url value='/controller/logout.do'/>"><i class="icon-chevron-right"></i> <fmt:message key="caption.menu.logout"/></a></li>
 			</c:otherwise>
 		</c:choose>

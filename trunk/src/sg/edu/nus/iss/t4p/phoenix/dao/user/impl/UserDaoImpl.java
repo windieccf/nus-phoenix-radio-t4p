@@ -23,11 +23,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
+import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantRole;
 import sg.edu.nus.iss.t4p.phoenix.core.constant.ConstantStatus;
-import sg.edu.nus.iss.t4p.phoenix.core.dao.DaoFactory;
 import sg.edu.nus.iss.t4p.phoenix.core.dao.impl.BaseDao;
 import sg.edu.nus.iss.t4p.phoenix.core.exceptions.NotFoundException;
 import sg.edu.nus.iss.t4p.phoenix.dao.user.UserDao;
@@ -118,73 +116,43 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 	 * @see package sg.edu.nus.iss.t4p.phoenix.dao.user#saveUser()
 	 */
 	@Override
-	public boolean saveUser(User user, String[] roleList) {
+	public boolean saveUser(User user) {
 		try {
 			super.persist(user);
-			if (!user.isPkSet()) {
-				createUserRoles(user, roleList);
-			} else {
-				updateUserRoles(user, roleList);
-				
-			}
+			user.setId(this.getByUsername(user.getUsername()).getId());
+			this.updateUserRoles(user);
 		} catch (SQLException | NotFoundException e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
+	
 
-	private void updateUserRoles(User user, String[] roleList)
-			throws SQLException {
-		List<Role> roles = DaoFactory.getInstance().getRoleDao()
-				.getRolesByUserId(user.getId());
-		List<String> rolesString = new ArrayList<String>();
-		for (Role inputRole : roles) {
-			rolesString.add(inputRole.getId().toString());
-		}
-		if (!rolesString.equals(Arrays.asList(roleList))) {
-			try (Connection con = this.getConnection()) {
-				String mySql = "DELETE FROM "
-						+ super.getTableName(UserRole.class.getName())
-						+ " WHERE USER_ID = " + user.getId() + "";
-				PreparedStatement stmt = con.prepareStatement(mySql.toString());
-				stmt.executeUpdate();
-			} catch (SQLException e) {
-				throw e;
-			}
-			for (String userRole : roleList) {
-				try (Connection con = this.getConnection()) {
-					String mySql = "INSERT INTO "
-							+ super.getTableName(UserRole.class.getName())
-							+ " (USER_ID, ROLE_ID) VALUES ( " + user.getId()
-							+ "," + userRole + " )";
-					PreparedStatement stmt = con.prepareStatement(mySql
-							.toString());
-					stmt.executeUpdate();
-				} catch (SQLException e) {
-					throw e;
-				}
-			}
-		}
-	}
-
-	private void createUserRoles(User user, String[] roleList)
-			throws SQLException {
-		try(Connection con = this.getConnection()){
-			for (String userRole : roleList) {
-				String mySql = "INSERT INTO "
-						+ super.getTableName(UserRole.class.getName())
-						+ " (USER_ID, ROLE_ID) VALUES ( "
-						+ this.getByUsername(user.getUsername()).getId()
-						+ "," + userRole + " )";
-				PreparedStatement stmt = con.prepareStatement(mySql
-						.toString());
+	private void updateUserRoles(User user) throws SQLException {
+		try (Connection con = this.getConnection()) {
+			if(user.isPkSet()){
+				// need to perform deletion before proceed
+				StringBuffer deleteSql = new StringBuffer("DELETE FROM " + super.getTableName(UserRole.class.getName()) + " WHERE USER_ID = ? ");
+				PreparedStatement stmt = con.prepareStatement(deleteSql.toString());
+				stmt.setLong(1, user.getId());
 				stmt.executeUpdate();
 			}
-		}catch(SQLException e){
+			for(Role role : user.getRoles()){
+				StringBuffer insertSql = new StringBuffer("INSERT INTO " + super.getTableName(UserRole.class.getName()) + " (USER_ID, ROLE_ID)  VALUES (?,?) ");
+				PreparedStatement stmt = con.prepareStatement(insertSql.toString());
+				stmt.setLong(1, user.getId());
+				stmt.setLong(2, role.getId());
+				stmt.executeUpdate();
+			}
+			
+			
+		}catch (SQLException e) {
 			throw e;
 		}
+		
 	}
+
 	
 	
 	/* (non-Javadoc)
@@ -226,14 +194,7 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao{
 		                   " AND R.ROLE = ? )" ;
 
 			PreparedStatement stmt = con.prepareStatement(mySql.toString());
-			
-			if(IsPresenter == true){
-	           stmt.setString(1, "Presenter");
-			}
-			else{
-				stmt.setString(1, "Producer");
-			}
-	        
+			stmt.setString(1, (IsPresenter) ?  ConstantRole.PRESENTER : ConstantRole.PRODUCER);
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next()){
