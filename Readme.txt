@@ -40,6 +40,7 @@
  password: password
  Role: producer
  Please get more user details info from database table: USER and USER_ROLE
- 4. Please kindly contact below engineers if you get any issues related to this application:
+ 4. Please refer to doc folder for Javadoc file
+ 5. Please kindly contact below engineers if you get any issues related to this application:
  Chen Changfeng @ 9005 1315
  Robin Foe @ 9115 7054
